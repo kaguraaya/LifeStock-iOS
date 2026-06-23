@@ -1,0 +1,326 @@
+import SwiftUI
+import SwiftData
+
+/// 物品详情页：统一查看物品全貌。
+///
+/// 结构：头图/状态 -> 价值 -> 历史购买 -> 图表 -> 备注
+struct ItemDetailView: View {
+
+    @Environment(\.modelContext) private var context
+    @Bindable var item: LifeItem
+
+    @State private var snap: ItemSnapshot?
+    @State private var showEdit = false
+    @State private var showRestock = false
+    @State private var showPurchaseEdit: PurchaseRecord?
+    @State private var showAddPurchase = false
+    @State private var showSnoozeFeedback = false
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 20) {
+                headerCard
+                valueCard
+                actionRow
+                purchaseHistorySection
+                if item.trackingMode == .consumable {
+                    forecastSection
+                }
+                if item.trackingMode == .durable {
+                    depreciationCard
+                }
+                noteCard
+            }
+            .padding(.vertical, 16)
+        }
+        .background(AppTheme.bg)
+        .navigationTitle(item.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    Button { showEdit = true } label: {
+                        Label("编辑", systemImage: "pencil")
+                    }
+                    Button {
+                        item.status = (item.status == .archived ? .active : .archived)
+                        try? context.save()
+                    } label: {
+                        Label(item.status == .archived ? "恢复追踪" : "归档",
+                              systemImage: "archivebox")
+                    }
+                    Button {
+                        NotificationService.shared.snooze(item: item)
+                        showSnoozeFeedback = true
+                    } label: {
+                        Label("稍后提醒", systemImage: "clock")
+                    }
+                    .tint(.orange)
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
+            }
+        }
+        .onAppear { refreshSnapshot() }
+        .sheet(isPresented: $showEdit) {
+            ItemEditView(item: item) { refreshSnapshot() }
+        }
+        .sheet(isPresented: $showRestock) {
+            RestockSheet(item: item) { refreshSnapshot() }
+        }
+        .sheet(isPresented: $showAddPurchase) {
+            PurchaseEditSheet(item: item, record: nil) { refreshSnapshot() }
+        }
+        .sheet(item: $showPurchaseEdit) { record in
+            PurchaseEditSheet(item: item, record: record) { refreshSnapshot() }
+        }
+        .alert("已设置稍后提醒", isPresented: $showSnoozeFeedback) {
+            Button("好的", role: .cancel) {}
+        } message: {
+            Text("将在 \(item.reminderPolicy?.snoozeHours ?? 8) 小时后再次提醒你。")
+        }
+    }
+
+    private func refreshSnapshot() {
+        snap = ItemSnapshotBuilder.snapshot(for: item)
+    }
+
+    // MARK: 头部状态卡
+    private var headerCard: some View {
+        let s = snap ?? ItemSnapshotBuilder.snapshot(for: item)
+        return VStack(spacing: 12) {
+            HStack {
+                Image(systemName: item.trackingMode.symbol)
+                    .font(.system(size: 36))
+                    .foregroundStyle(s.urgencyColor)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(item.name).font(.title3.bold())
+                    HStack {
+                        ModeBadge(mode: item.trackingMode)
+                        Text(item.category.displayName)
+                            .font(.caption)
+                            .padding(.horizontal, 7).padding(.vertical, 3)
+                            .background(.gray.opacity(0.15), in: Capsule())
+                        if let brand = item.brand {
+                            Text(brand)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+                Spacer()
+            }
+            Divider()
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("状态").font(.caption).foregroundStyle(.secondary)
+                    Text(s.statusText)
+                        .font(.headline)
+                        .foregroundStyle(s.urgencyColor)
+                }
+                Spacer()
+                if let target = s.targetDate {
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text("目标日期").font(.caption).foregroundStyle(.secondary)
+                        Text(RelativeDateText.short(target))
+                            .font(.headline)
+                    }
+                }
+            }
+        }
+        .padding(AppTheme.pad)
+        .background(AppTheme.card, in: RoundedRectangle(cornerRadius: AppTheme.corner))
+        .padding(.horizontal, AppTheme.pad)
+    }
+
+    // MARK: 价值卡
+    private var valueCard: some View {
+        let daily = ForecastEngine.dailyCost(for: item)
+        let last = item.purchasePrice
+        return VStack(alignment: .leading, spacing: 12) {
+            Text("价值").font(.headline)
+            HStack {
+                metricCell(title: "日均成本", value: daily.map { String(format: "%.2f 元", $0) } ?? "—")
+                Divider().frame(height: 36)
+                metricCell(title: "最近总价", value: last.map { String(format: "%.2f 元", $0) } ?? "—")
+                if let unitP = item.unitPrice, unitP > 0, let u = item.unitName {
+                    Divider().frame(height: 36)
+                    metricCell(title: "单价",
+                               value: String(format: "%.3f 元/%@", unitP, u))
+                }
+            }
+        }
+        .padding(AppTheme.pad)
+        .background(AppTheme.card, in: RoundedRectangle(cornerRadius: AppTheme.corner))
+        .padding(.horizontal, AppTheme.pad)
+    }
+
+    private func metricCell(title: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title).font(.caption).foregroundStyle(.secondary)
+            Text(value).font(.subheadline.weight(.semibold))
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    // MARK: 动作行
+    private var actionRow: some View {
+        HStack(spacing: 12) {
+            primaryAction("我已补货", system: "cart.fill") {
+                showRestock = true
+            }
+            secondaryAction("新增记录", system: "doc.badge.plus") {
+                showAddPurchase = true
+            }
+        }
+        .padding(.horizontal, AppTheme.pad)
+    }
+
+    private func primaryAction(_ title: String, system: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Label(title, systemImage: system)
+                .font(.subheadline.weight(.semibold))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+        }
+        .buttonStyle(.borderedProminent)
+        .tint(AppTheme.accent)
+    }
+
+    private func secondaryAction(_ title: String, system: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Label(title, systemImage: system)
+                .font(.subheadline.weight(.medium))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+        }
+        .buttonStyle(.bordered)
+    }
+
+    // MARK: 历史购买
+    private var purchaseHistorySection: some View {
+        let sorted = item.purchases.sorted { $0.purchasedAt > $1.purchasedAt }
+        return VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("历史购买").font(.headline)
+                Spacer()
+                if !sorted.isEmpty {
+                    Text("共 \(sorted.count) 次").font(.caption).foregroundStyle(.secondary)
+                }
+            }
+            if sorted.isEmpty {
+                Text("还没有购买记录，补货或新增记录后会出现在这里。")
+                    .font(.subheadline).foregroundStyle(.secondary)
+            } else {
+                ForEach(sorted) { record in
+                    Button {
+                        showPurchaseEdit = record
+                    } label: {
+                        purchaseRow(record)
+                    }
+                    .buttonStyle(.plain)
+                    if record.id != sorted.last?.id { Divider() }
+                }
+            }
+        }
+        .padding(AppTheme.pad)
+        .background(AppTheme.card, in: RoundedRectangle(cornerRadius: AppTheme.corner))
+        .padding(.horizontal, AppTheme.pad)
+    }
+
+    private func purchaseRow(_ r: PurchaseRecord) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(RelativeDateText.short(r.purchasedAt)).font(.subheadline.weight(.medium))
+                if let life = r.lifeDaysObserved {
+                    Text("实际用了 \(life) 天").font(.caption).foregroundStyle(.secondary)
+                }
+            }
+            Spacer()
+            VStack(alignment: .trailing, spacing: 2) {
+                Text(String(format: "%.2f 元", r.effectiveCost ?? r.totalPrice))
+                    .font(.subheadline.weight(.semibold))
+                if let unitP = r.unitPrice, unitP > 0, let u = item.unitName {
+                    Text(String(format: "%.3f 元/%@", unitP, u))
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+            }
+        }
+        .padding(.vertical, 4)
+        .contentShape(Rectangle())
+    }
+
+    // MARK: 预测信息
+    private var forecastSection: some View {
+        let result = ForecastEngine.predictRepurchaseDate(for: item)
+        let level = ConfidenceLevel.from(score: result.confidence)
+        return VStack(alignment: .leading, spacing: 8) {
+            Text("复购预测").font(.headline)
+            HStack {
+                Image(systemName: "waveform.path.ecg").foregroundStyle(AppTheme.accent)
+                if let interval = result.predictedIntervalDays {
+                    Text(String(format: "预测周期 %.1f 天", interval))
+                        .font(.subheadline.weight(.medium))
+                } else {
+                    Text("数据不足").font(.subheadline)
+                }
+                Spacer()
+                ConfidenceTag(level: level)
+            }
+            Text(result.note).font(.caption).foregroundStyle(.secondary)
+        }
+        .padding(AppTheme.pad)
+        .background(AppTheme.card, in: RoundedRectangle(cornerRadius: AppTheme.corner))
+        .padding(.horizontal, AppTheme.pad)
+    }
+
+    // MARK: 折旧（耐用品）
+    private var depreciationCard: some View {
+        guard let price = item.devicePurchasePrice,
+              let life = item.usefulLifeDays,
+              let purchase = item.purchaseDate else {
+            return AnyView(EmptyView())
+        }
+        let residual = item.residualValue ?? 0
+        let daysUsed = max(0, ForecastEngine.daysLeft(from: purchase, to: .now)) // purchase 在过去 -> 已用天数为正
+        let dep = ForecastEngine.straightLineDepreciation(
+            purchasePrice: price, residualValue: residual,
+            usefulLifeDays: life, daysUsed: daysUsed
+        )
+        return AnyView(
+            VStack(alignment: .leading, spacing: 10) {
+                Text("折旧与当前价值").font(.headline)
+                HStack {
+                    metricCell(title: "购入价", value: String(format: "%.0f 元", price))
+                    Divider().frame(height: 36)
+                    metricCell(title: "已用", value: "\(daysUsed) 天")
+                    Divider().frame(height: 36)
+                    metricCell(title: "累计折旧", value: String(format: "%.0f 元", dep.accumulatedDepreciation))
+                    Divider().frame(height: 36)
+                    metricCell(title: "账面价值", value: String(format: "%.0f 元", dep.bookValue))
+                }
+                Text(String(format: "日均折旧 %.2f 元", dep.dailyDepreciation))
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            .padding(AppTheme.pad)
+            .background(AppTheme.card, in: RoundedRectangle(cornerRadius: AppTheme.corner))
+            .padding(.horizontal, AppTheme.pad)
+        )
+    }
+
+    // MARK: 备注
+    private var noteCard: some View {
+        Group {
+            if !item.note.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("备注").font(.headline)
+                    Text(item.note).font(.subheadline).foregroundStyle(.primary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(AppTheme.pad)
+                .background(AppTheme.card, in: RoundedRectangle(cornerRadius: AppTheme.corner))
+                .padding(.horizontal, AppTheme.pad)
+            }
+        }
+    }
+}
