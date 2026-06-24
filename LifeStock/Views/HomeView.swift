@@ -63,19 +63,42 @@ struct HomeView: View {
             inLast: 30,
             records: items.flatMap { $0.purchases }
         )
-        return CardSection(title: "今日总览",
-                           subtitle: "今天值得处理的，不止是截止日期，还有你快用完的生活。") {
+        let saved = InsightEngine.totalSavings(items: items)
+        return VStack(spacing: 12) {
+            // 强调头部：本周待处理 + 一句文案，渐变背景
+            VStack(alignment: .leading, spacing: 6) {
+                Text("本周待处理")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.white.opacity(0.9))
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    Text("\(pendingThisWeek)")
+                        .font(.system(size: 40, weight: .bold))
+                        .foregroundStyle(.white)
+                    Text("项需关注")
+                        .font(.subheadline)
+                        .foregroundStyle(.white.opacity(0.85))
+                    Spacer()
+                    Image(systemName: "sparkles")
+                        .font(.title2)
+                        .foregroundStyle(.white.opacity(0.7))
+                }
+            }
+            .padding(AppTheme.pad)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(AppTheme.brandGradient, in: RoundedRectangle(cornerRadius: AppTheme.corner))
+            .cardShadow()
+
             HStack(spacing: 12) {
                 SummaryCard(title: "追踪中", value: "\(snapshots.count)",
                             subtitle: "件物品", symbol: "shippingbox.fill")
-                SummaryCard(title: "本周待处理", value: "\(pendingThisWeek)",
-                            subtitle: "项需关注", symbol: "exclamationmark.bubble.fill",
-                            tint: pendingThisWeek > 0 ? AppTheme.orange : AppTheme.accent)
                 SummaryCard(title: "本月花费", value: MoneyFormatter.compact(monthSpend),
-                            subtitle: "近 30 天累计", symbol: "yensign.circle.fill",
+                            subtitle: "近 30 天", symbol: "yensign.circle.fill",
                             tint: .green)
+                SummaryCard(title: "累计节省", value: MoneyFormatter.compact(saved),
+                            subtitle: "元", symbol: "tag.fill", tint: AppTheme.accent)
             }
         }
+        .padding(.horizontal, AppTheme.pad)
     }
 
     // MARK: 高优先卡片

@@ -29,6 +29,7 @@ struct ProfileView: View {
                 dataSection
                 demoSection
                 templateSection
+                manageSection
                 exportSection
                 aboutSection
             }
@@ -141,6 +142,22 @@ struct ProfileView: View {
                 showTemplateSheet = true
             } label: {
                 Label("模板中心（\(templates.count)）", systemImage: "square.grid.2x2")
+            }
+        }
+    }
+
+    // MARK: - 管理入口（商家 / 成就）
+    private var manageSection: some View {
+        Section("管理") {
+            NavigationLink {
+                MerchantView()
+            } label: {
+                Label("商家管理", systemImage: "storefront")
+            }
+            NavigationLink {
+                AchievementsView()
+            } label: {
+                Label("成就与节省", systemImage: "rosette")
             }
         }
     }

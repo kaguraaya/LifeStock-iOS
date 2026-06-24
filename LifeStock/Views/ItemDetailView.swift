@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import UIKit
 
 /// 物品详情页：统一查看物品全貌。
 ///
@@ -19,6 +20,7 @@ struct ItemDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
+                heroImage
                 headerCard
                 valueCard
                 actionRow
@@ -83,6 +85,24 @@ struct ItemDetailView: View {
 
     private func refreshSnapshot() {
         snap = ItemSnapshotBuilder.snapshot(for: item)
+    }
+
+    // MARK: 头图（如果有缩略图则展示横幅）
+    @ViewBuilder
+    private var heroImage: some View {
+        if let data = item.thumbnailData, let uiImg = UIImage(data: data) {
+            Image(uiImage: uiImg)
+                .resizable().scaledToFill()
+                .frame(maxWidth: .infinity)
+                .frame(height: 160)
+                .clipped()
+                .overlay(
+                    LinearGradient(colors: [.black.opacity(0.35), .clear],
+                                   startPoint: .bottom, endPoint: .center)
+                )
+                .clipShape(RoundedRectangle(cornerRadius: AppTheme.corner))
+                .padding(.horizontal, AppTheme.pad)
+        }
     }
 
     // MARK: 头部状态卡

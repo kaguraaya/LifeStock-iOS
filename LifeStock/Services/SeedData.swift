@@ -85,15 +85,17 @@ enum SeedData {
 
         // ---- 场景 1：宿舍常用品 ----
         // 纸巾：3 次历史购买，间隔 30/28/26 -> WMA ≈ 27.4，预测 3 天后用完
+        // 价格刻意不同，让"节省统计"有数据：中位单价 0.040，本次 0.036 -> 省了约 2 元
         let tissue = makeItem(
             name: "清风纸巾", mode: .consumable, category: .daily,
-            purchasePrice: 19.9, unitName: "抽", packageQuantity: 500,
+            purchasePrice: 18.0, unitName: "抽", packageQuantity: 500,
             expectedUseDays: 27, shippingLeadDays: 2, now: now,
             note: "宿舍常备，网购需提前 2 天"
         )
-        addPurchase(to: tissue, daysAgo: 60, price: 21.0, pkgQty: 500, observedLife: 30)
-        addPurchase(to: tissue, daysAgo: 32, price: 19.5, pkgQty: 500, observedLife: 28)
-        addPurchase(to: tissue, daysAgo: 4,  price: 19.9, pkgQty: 500, observedLife: nil) // 最新一次还没观测完
+        tissue.thumbnailData = ImageStore.demoThumbnail(symbol: "shippingbox.fill", background: .orange)
+        addPurchase(to: tissue, daysAgo: 60, price: 22.0, pkgQty: 500, observedLife: 30) // 单价 0.044 偏贵
+        addPurchase(to: tissue, daysAgo: 32, price: 20.0, pkgQty: 500, observedLife: 28) // 0.040 中位
+        addPurchase(to: tissue, daysAgo: 4,  price: 18.0, pkgQty: 500, observedLife: nil) // 0.036 便宜，省了
         context.insert(tissue)
 
         // 沐浴露：预计 6 天后用完
@@ -102,7 +104,9 @@ enum SeedData {
             purchasePrice: 39, unitName: "ml", packageQuantity: 500,
             expectedUseDays: 45, now: now
         )
-        addPurchase(to: showerGel, daysAgo: 40, price: 39, pkgQty: 500, observedLife: nil)
+        showerGel.thumbnailData = ImageStore.demoThumbnail(symbol: "drop.fill", background: .teal)
+        addPurchase(to: showerGel, daysAgo: 90, price: 45, pkgQty: 500, observedLife: nil)
+        addPurchase(to: showerGel, daysAgo: 40, price: 39, pkgQty: 500, observedLife: nil) // 便宜
         context.insert(showerGel)
 
         // 牙膏：还有 20 天
@@ -122,6 +126,7 @@ enum SeedData {
             expiryDate: cal.date(byAdding: .day, value: 0, to: now),
             now: now
         )
+        milk.thumbnailData = ImageStore.demoThumbnail(symbol: "cup.and.saucer.fill", background: .blue)
         addPurchase(to: milk, daysAgo: 5, price: 8, pkgQty: 1, observedLife: nil)
         context.insert(milk)
 
@@ -163,6 +168,7 @@ enum SeedData {
             purchaseDate: cal.date(byAdding: .day, value: -180, to: now),
             now: now, note: "已用 180 天，按直线法折旧"
         )
+        earphone.thumbnailData = ImageStore.demoThumbnail(symbol: "airpodspro", background: .gray)
         context.insert(earphone)
 
         // 云盘订阅：年度
@@ -175,6 +181,21 @@ enum SeedData {
         )
         addPurchase(to: cloud, daysAgo: 21, price: 21, pkgQty: nil, observedLife: nil, source: .subscription)
         context.insert(cloud)
+
+        // ---- 演示商家：让商家管理页有内容 ----
+        let merchants = [
+            Merchant(name: "学校超市", type: .campus, leadDays: 0, isFavorite: true),
+            Merchant(name: "京东", type: .online, leadDays: 2, deeplinkURL: "https://m.jd.com", isFavorite: true),
+            Merchant(name: "淘宝", type: .online, leadDays: 3),
+            Merchant(name: "校医院", type: .campus, leadDays: 0),
+            Merchant(name: "苹果官网", type: .online, leadDays: 1, deeplinkURL: "https://www.apple.com.cn")
+        ]
+        for m in merchants { context.insert(m) }
+        // 关联：纸巾默认从京东买（呼应提前期 2 天）
+        if let jd = merchants.first(where: { $0.name == "京东" }) {
+            tissue.purchaseChannelID = jd.id
+        }
+        try? context.save()
 
         // 给所有物品附加默认提醒策略
         let allItems = (try? context.fetch(FetchDescriptor<LifeItem>())) ?? []

@@ -86,6 +86,7 @@ struct SummaryCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(AppTheme.pad)
         .background(AppTheme.card, in: RoundedRectangle(cornerRadius: AppTheme.corner))
+        .cardShadow()
     }
 }
 

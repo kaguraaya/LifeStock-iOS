@@ -8,6 +8,9 @@ struct LifeStockApp: App {
     /// 采用默认存储（本地 App Support 下 sqlite），符合"离线优先、设备端计算"原则。
     let container: ModelContainer
 
+    /// 是否需要展示首次引导
+    @AppStorage("lifestock.onboarding.done") private var onboardingDone: Bool = false
+
     init() {
         do {
             container = try ModelContainer(
@@ -34,22 +37,29 @@ struct LifeStockApp: App {
         // 启动时注册通知分类
         NotificationService.shared.registerCategories()
 
-        // 首次启动：播种内置模板
+        // 启动时播种内置模板
         SeedData.seedBuiltInTemplates(context: container.mainContext)
+
+        // 首次启动立即播种演示数据，确保首屏不空（无论是否过引导页）
+        if !SeedData.hasSeeded() {
+            SeedData.seedDemoData(context: container.mainContext)
+        }
     }
 
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .modelContainer(container)
-                .onAppear {
-                    // 演示数据仅在首次安装时自动播种一次
-                    if !SeedData.hasSeeded() {
-                        SeedData.seedDemoData(context: container.mainContext)
+            if onboardingDone {
+                RootView()
+                    .modelContainer(container)
+                    .onAppear {
+                        SummaryRefresh.refresh(context: container.mainContext)
                     }
-                    // 启动时刷新小组件摘要
+            } else {
+                OnboardingView {
+                    onboardingDone = true
                     SummaryRefresh.refresh(context: container.mainContext)
                 }
+            }
         }
     }
 }

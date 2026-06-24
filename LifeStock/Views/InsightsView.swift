@@ -50,6 +50,7 @@ struct InsightsView: View {
                     } else {
                         windowPicker
                         summaryCards
+                        savingsSection
                         categoryChart
                         monthlyChart
                         priceTrendChart
@@ -88,6 +89,41 @@ struct InsightsView: View {
                 SummaryCard(title: "日均花费", value: String(format: "%.1f", dailyAvg),
                             subtitle: "元/天", symbol: "calendar", tint: AppTheme.accent)
             }
+        }
+    }
+
+    // MARK: 节省统计
+    private var savingsSection: some View {
+        let totalSaved = InsightEngine.totalSavings(items: items)
+        // 找出"省得最多"的一次购买
+        let bestSave: (name: String, amount: Double)? = {
+            var best: (name: String, amount: Double)? = nil
+            for item in items {
+                for r in item.purchases {
+                    if let s = InsightEngine.savings(for: r, in: item), s > 0 {
+                        if best == nil || s > best!.amount {
+                            best = (item.name, s)
+                        }
+                    }
+                }
+            }
+            return best
+        }()
+        return CardSection(title: "节省统计", subtitle: "以历史中位单价为基准的估算") {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(spacing: 12) {
+                    SummaryCard(title: "累计节省", value: MoneyFormatter.string(totalSaved),
+                                subtitle: "元", symbol: "yensign.circle.fill", tint: .green)
+                    SummaryCard(title: "最省一笔",
+                                value: bestSave == nil ? "—" : String(format: "%.1f", bestSave!.amount),
+                                subtitle: bestSave == nil ? "暂无" : bestSave!.name,
+                                symbol: "tag.fill", tint: AppTheme.accent)
+                }
+                Text("口径：对同一物品的历史单价取中位数，估算每次购买相对中位的节省额。仅作趣味参考。")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            .padding(AppTheme.pad)
+            .background(AppTheme.card, in: RoundedRectangle(cornerRadius: AppTheme.corner))
         }
     }
 

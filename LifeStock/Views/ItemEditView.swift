@@ -1,5 +1,7 @@
 import SwiftUI
 import SwiftData
+import PhotosUI
+import UIKit
 
 /// 物品完整新增/编辑表单。
 ///
@@ -49,11 +51,19 @@ struct ItemEditView: View {
 
     @State private var firstPurchaseTotal: String = ""   // 新建时同时记录首条购买
 
+    // 图片
+    @State private var photoItem: PhotosPickerItem?
+    @State private var previewImage: Image?
+    @State private var pendingThumbnail: Data?
+    @State private var pendingPath: String?
+    @State private var existingThumbnail: Data?
+
     private var isEditing: Bool { item != nil }
 
     var body: some View {
         NavigationStack {
             Form {
+                imageSection
                 basicSection
                 modeSpecificSection
                 priceSection
@@ -73,10 +83,78 @@ struct ItemEditView: View {
                 }
             }
             .onAppear { load() }
+            .onChange(of: photoItem) { _, newItem in
+                handlePickedPhoto(newItem)
+            }
         }
     }
 
-    // MARK: - 基础
+    // MARK: - 图片
+    private var imageSection: some View {
+        Section("图片（可选）") {
+            HStack(spacing: 16) {
+                // 预览：优先新选的图，其次已有缩略图
+                if let preview = previewImage {
+                    preview
+                        .resizable().scaledToFill()
+                        .frame(width: 72, height: 72)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                } else if let data = existingThumbnail, let uiImg = UIImage(data: data) {
+                    Image(uiImage: uiImg)
+                        .resizable().scaledToFill()
+                        .frame(width: 72, height: 72)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                } else {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [4]))
+                            .foregroundStyle(.tertiary)
+                            .frame(width: 72, height: 72)
+                        Image(systemName: "photo")
+                            .foregroundStyle(.tertiary)
+                    }
+                }
+
+                VStack(alignment: .leading, spacing: 8) {
+                    PhotosPicker(selection: $photoItem, matching: .images) {
+                        Label(previewImage == nil && existingThumbnail == nil ? "添加图片" : "更换图片",
+                              systemImage: "photo.badge.plus")
+                    }
+                    if previewImage != nil || existingThumbnail != nil {
+                        Button(role: .destructive) {
+                            removeImage()
+                        } label: {
+                            Label("移除图片", systemImage: "trash")
+                                .font(.subheadline)
+                        }
+                    }
+                }
+                Spacer()
+            }
+        }
+    }
+
+    private func handlePickedPhoto(_ item: PhotosPickerItem?) {
+        guard let item else { return }
+        item.loadTransferable(type: Data.self) { result in
+            if case .success(let data?) = result, let uiImage = UIImage(data: data) {
+                let saved = ImageStore.save(image: uiImage)
+                DispatchQueue.main.async {
+                    self.pendingPath = saved?.relativePath
+                    self.pendingThumbnail = saved?.thumbnail
+                    self.previewImage = Image(uiImage: uiImage)
+                }
+            }
+        }
+    }
+
+    private func removeImage() {
+        previewImage = nil
+        pendingPath = nil
+        pendingThumbnail = nil
+        existingThumbnail = nil
+        photoItem = nil
+    }
     private var basicSection: some View {
         Section("基础") {
             TextField("名称（如：清风纸巾）", text: $name)
@@ -199,6 +277,7 @@ struct ItemEditView: View {
         unitName = item.unitName ?? ""
         packageQuantity = item.packageQuantity.map { String($0) } ?? ""
         expectedUseDays = item.expectedUseDays.map { String($0) } ?? ""
+        existingThumbnail = item.thumbnailData
 
         purchasePrice = item.purchasePrice.map { String($0) } ?? ""
         if let pd = item.purchaseDate {
@@ -266,6 +345,19 @@ struct ItemEditView: View {
         target.shippingLeadDays = shippingLeadDays
         target.note = note
         target.updatedAt = .now
+
+        // 图片：若本次选了新图则落盘并保存缩略图；若移除了则清空旧图
+        if let path = pendingPath {
+            // 编辑模式下若已有旧图，先删掉
+            if isEditing { ImageStore.remove(relativePath: target.imageLocalPath) }
+            target.imageLocalPath = path
+            target.thumbnailData = pendingThumbnail
+        } else if existingThumbnail == nil && previewImage == nil {
+            // 用户点了"移除"
+            if isEditing { ImageStore.remove(relativePath: target.imageLocalPath) }
+            target.imageLocalPath = nil
+            target.thumbnailData = nil
+        }
 
         // 单价
         if let pkg = target.packageQuantity, pkg > 0,

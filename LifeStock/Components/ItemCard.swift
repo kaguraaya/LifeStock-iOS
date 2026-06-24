@@ -51,6 +51,7 @@ struct ItemCard: View {
             }
             .padding(AppTheme.pad)
             .background(AppTheme.card, in: RoundedRectangle(cornerRadius: AppTheme.corner))
+            .cardShadow()
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)

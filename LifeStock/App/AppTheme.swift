@@ -17,6 +17,25 @@ enum AppTheme {
     static let corner: CGFloat = 16
     static let pad: CGFloat = 16
     static let gap: CGFloat = 12
+
+    /// 主品牌渐变（橙→金），用于强调卡片、徽章、引导页
+    static var brandGradient: LinearGradient {
+        LinearGradient(colors: [accent, Color(red: 1.0, green: 0.66, blue: 0.30)],
+                       startPoint: .topLeading, endPoint: .bottomTrailing)
+    }
+}
+
+/// 卡片阴影修饰符，统一阴影观感
+struct CardShadow: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 3)
+    }
+}
+
+extension View {
+    /// 给卡片加柔和阴影
+    func cardShadow() -> some View { modifier(CardShadow()) }
 }
 
 /// 紧迫度到颜色的映射（与 ItemSnapshot 保持一致，便于复用）
