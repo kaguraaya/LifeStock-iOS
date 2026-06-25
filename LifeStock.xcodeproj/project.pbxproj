@@ -3,482 +3,364 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 60;
 	objects = {
+
 /* Begin PBXBuildFile section */
-		8C00000000000000000000A1 /* LifeStockWidget.appex in Embed App Extensions */ = {
-			isa = PBXBuildFile;
-			fileRef = 8C0000000000000000000021 /* LifeStockWidget.appex */;
-			settings = {
-				attributes = {
-					RemoveHeadersOnCopy = 1;
-				};
-			};
-		};
+		050000000000000000000000 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000000 /* AppTheme.swift */; };
+		050000000000000000000001 /* LifeStockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000001 /* LifeStockApp.swift */; };
+		050000000000000000000002 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000002 /* RootView.swift */; };
+		050000000000000000000003 /* ItemIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000003 /* ItemIntents.swift */; };
+		050000000000000000000004 /* ItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000004 /* ItemCard.swift */; };
+		050000000000000000000005 /* SharedComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000005 /* SharedComponents.swift */; };
+		050000000000000000000006 /* ForecastEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000006 /* ForecastEngine.swift */; };
+		050000000000000000000007 /* InsightEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000007 /* InsightEngine.swift */; };
+		050000000000000000000008 /* ItemSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000008 /* ItemSnapshot.swift */; };
+		050000000000000000000009 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000009 /* Enums.swift */; };
+		05000000000000000000000A /* LifeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04000000000000000000000A /* LifeItem.swift */; };
+		05000000000000000000000B /* PurchaseRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04000000000000000000000B /* PurchaseRecord.swift */; };
+		05000000000000000000000C /* SupportingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04000000000000000000000C /* SupportingModels.swift */; };
+		05000000000000000000000D /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04000000000000000000000D /* ExportService.swift */; };
+		05000000000000000000000E /* ImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04000000000000000000000E /* ImageStore.swift */; };
+		05000000000000000000000F /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04000000000000000000000F /* NotificationService.swift */; };
+		050000000000000000000010 /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000010 /* OCRService.swift */; };
+		050000000000000000000011 /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000011 /* SeedData.swift */; };
+		050000000000000000000012 /* SummaryRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000012 /* SummaryRefresh.swift */; };
+		050000000000000000000013 /* SummaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000013 /* SummaryStore.swift */; };
+		050000000000000000000014 /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000014 /* AchievementsView.swift */; };
+		050000000000000000000015 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000015 /* HomeView.swift */; };
+		050000000000000000000016 /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000016 /* InsightsView.swift */; };
+		050000000000000000000017 /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000017 /* ItemDetailView.swift */; };
+		050000000000000000000018 /* ItemEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000018 /* ItemEditView.swift */; };
+		050000000000000000000019 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000019 /* LibraryView.swift */; };
+		05000000000000000000001A /* MerchantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04000000000000000000001A /* MerchantView.swift */; };
+		05000000000000000000001B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04000000000000000000001B /* OnboardingView.swift */; };
+		05000000000000000000001C /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04000000000000000000001C /* ProfileView.swift */; };
+		05000000000000000000001D /* PurchaseEditSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04000000000000000000001D /* PurchaseEditSheet.swift */; };
+		05000000000000000000001E /* QuickAddSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04000000000000000000001E /* QuickAddSheet.swift */; };
+		05000000000000000000001F /* ReceiptScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04000000000000000000001F /* ReceiptScannerView.swift */; };
+		050000000000000000000020 /* ReminderCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000020 /* ReminderCenterView.swift */; };
+		050000000000000000000021 /* RestockSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000021 /* RestockSheet.swift */; };
+		050000000000000000000064 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 040000000000000000000064 /* Assets.xcassets */; };
+		070000000000000000000000 /* LifeStockWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060000000000000000000000 /* LifeStockWidget.swift */; };
+		070000000000000000000001 /* LifeStockWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060000000000000000000001 /* LifeStockWidgetBundle.swift */; };
+		070000000000000000000002 /* SummaryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060000000000000000000002 /* SummaryStore.swift */; };
+		070000000000000000000064 /* WidgetAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 060000000000000000000064 /* Assets.xcassets */; };
+		050000000000000000000065 /* LifeStockWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 030000000000000000000002 /* LifeStockWidget.appex */; settings = { attributes = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8C0000000000000000000020 /* LifeStock.app */ = {
-			isa = PBXFileReference;
-			explicitFileType = wrapper.application;
-			includeInIndex = 0;
-			path = LifeStock.app;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8C0000000000000000000021 /* LifeStockWidget.appex */ = {
-			isa = PBXFileReference;
-			explicitFileType = "wrapper.app-extension";
-			includeInIndex = 0;
-			path = LifeStockWidget.appex;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
+		030000000000000000000001 /* LifeStock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LifeStock.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		030000000000000000000002 /* LifeStockWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LifeStockWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		040000000000000000000000 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		040000000000000000000001 /* LifeStockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeStockApp.swift; sourceTree = "<group>"; };
+		040000000000000000000002 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		040000000000000000000003 /* ItemIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemIntents.swift; sourceTree = "<group>"; };
+		040000000000000000000004 /* ItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCard.swift; sourceTree = "<group>"; };
+		040000000000000000000005 /* SharedComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedComponents.swift; sourceTree = "<group>"; };
+		040000000000000000000006 /* ForecastEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastEngine.swift; sourceTree = "<group>"; };
+		040000000000000000000007 /* InsightEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightEngine.swift; sourceTree = "<group>"; };
+		040000000000000000000008 /* ItemSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSnapshot.swift; sourceTree = "<group>"; };
+		040000000000000000000009 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		04000000000000000000000A /* LifeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeItem.swift; sourceTree = "<group>"; };
+		04000000000000000000000B /* PurchaseRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseRecord.swift; sourceTree = "<group>"; };
+		04000000000000000000000C /* SupportingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportingModels.swift; sourceTree = "<group>"; };
+		04000000000000000000000D /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
+		04000000000000000000000E /* ImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStore.swift; sourceTree = "<group>"; };
+		04000000000000000000000F /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		040000000000000000000010 /* OCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRService.swift; sourceTree = "<group>"; };
+		040000000000000000000011 /* SeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedData.swift; sourceTree = "<group>"; };
+		040000000000000000000012 /* SummaryRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryRefresh.swift; sourceTree = "<group>"; };
+		040000000000000000000013 /* SummaryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryStore.swift; sourceTree = "<group>"; };
+		040000000000000000000014 /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
+		040000000000000000000015 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		040000000000000000000016 /* InsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsView.swift; sourceTree = "<group>"; };
+		040000000000000000000017 /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
+		040000000000000000000018 /* ItemEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditView.swift; sourceTree = "<group>"; };
+		040000000000000000000019 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		04000000000000000000001A /* MerchantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantView.swift; sourceTree = "<group>"; };
+		04000000000000000000001B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		04000000000000000000001C /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		04000000000000000000001D /* PurchaseEditSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseEditSheet.swift; sourceTree = "<group>"; };
+		04000000000000000000001E /* QuickAddSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddSheet.swift; sourceTree = "<group>"; };
+		04000000000000000000001F /* ReceiptScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptScannerView.swift; sourceTree = "<group>"; };
+		040000000000000000000020 /* ReminderCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCenterView.swift; sourceTree = "<group>"; };
+		040000000000000000000021 /* RestockSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestockSheet.swift; sourceTree = "<group>"; };
+		060000000000000000000000 /* LifeStockWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeStockWidget.swift; sourceTree = "<group>"; };
+		060000000000000000000001 /* LifeStockWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeStockWidgetBundle.swift; sourceTree = "<group>"; };
+		060000000000000000000002 /* SummaryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryStore.swift; sourceTree = "<group>"; };
+		040000000000000000000064 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		060000000000000000000064 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		8C0000000000000000000030 /* LifeStock */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = LifeStock;
-			sourceTree = "<group>";
-		};
-		8C0000000000000000000031 /* LifeStockWidget */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = LifeStockWidget;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
-
 /* Begin PBXGroup section */
-		8C0000000000000000000010 /* main group */ = {
-			isa = PBXGroup;
-			children = (
-				8C0000000000000000000030 /* LifeStock */,
-				8C0000000000000000000031 /* LifeStockWidget */,
-				8C0000000000000000000011 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		8C0000000000000000000011 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8C0000000000000000000020 /* LifeStock.app */,
-				8C0000000000000000000021 /* LifeStockWidget.appex */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
+		020000000000000000000001 = {isa = PBXGroup; children = ( 020000000000000000000003 /* LifeStock */, 020000000000000000000014 /* LifeStockWidget */, 020000000000000000000002 /* Products */, ); sourceTree = "<group>"; };
+		020000000000000000000002 /* Products */ = {isa = PBXGroup; children = ( 030000000000000000000001 /* LifeStock.app */, 030000000000000000000002 /* LifeStockWidget.appex */, ); name = Products; sourceTree = "<group>"; };
+		02000000000000000000000A /* App */ = {isa = PBXGroup; children = ( 040000000000000000000000 /* AppTheme.swift */, 040000000000000000000001 /* LifeStockApp.swift */, 040000000000000000000002 /* RootView.swift */ ); path = App; sourceTree = "<group>"; };
+		02000000000000000000000B /* AppIntents */ = {isa = PBXGroup; children = ( 040000000000000000000003 /* ItemIntents.swift */ ); path = AppIntents; sourceTree = "<group>"; };
+		02000000000000000000000C /* Components */ = {isa = PBXGroup; children = ( 040000000000000000000004 /* ItemCard.swift */, 040000000000000000000005 /* SharedComponents.swift */ ); path = Components; sourceTree = "<group>"; };
+		02000000000000000000000D /* Engine */ = {isa = PBXGroup; children = ( 040000000000000000000006 /* ForecastEngine.swift */, 040000000000000000000007 /* InsightEngine.swift */, 040000000000000000000008 /* ItemSnapshot.swift */ ); path = Engine; sourceTree = "<group>"; };
+		02000000000000000000000E /* Models */ = {isa = PBXGroup; children = ( 040000000000000000000009 /* Enums.swift */, 04000000000000000000000A /* LifeItem.swift */, 04000000000000000000000B /* PurchaseRecord.swift */, 04000000000000000000000C /* SupportingModels.swift */ ); path = Models; sourceTree = "<group>"; };
+		02000000000000000000000F /* Services */ = {isa = PBXGroup; children = ( 04000000000000000000000D /* ExportService.swift */, 04000000000000000000000E /* ImageStore.swift */, 04000000000000000000000F /* NotificationService.swift */, 040000000000000000000010 /* OCRService.swift */, 040000000000000000000011 /* SeedData.swift */, 040000000000000000000012 /* SummaryRefresh.swift */, 040000000000000000000013 /* SummaryStore.swift */ ); path = Services; sourceTree = "<group>"; };
+		020000000000000000000010 /* Views */ = {isa = PBXGroup; children = ( 040000000000000000000014 /* AchievementsView.swift */, 040000000000000000000015 /* HomeView.swift */, 040000000000000000000016 /* InsightsView.swift */, 040000000000000000000017 /* ItemDetailView.swift */, 040000000000000000000018 /* ItemEditView.swift */, 040000000000000000000019 /* LibraryView.swift */, 04000000000000000000001A /* MerchantView.swift */, 04000000000000000000001B /* OnboardingView.swift */, 04000000000000000000001C /* ProfileView.swift */, 04000000000000000000001D /* PurchaseEditSheet.swift */, 04000000000000000000001E /* QuickAddSheet.swift */, 04000000000000000000001F /* ReceiptScannerView.swift */, 040000000000000000000020 /* ReminderCenterView.swift */, 040000000000000000000021 /* RestockSheet.swift */ ); path = Views; sourceTree = "<group>"; };
+		020000000000000000000003 /* LifeStock */ = {isa = PBXGroup; children = ( 02000000000000000000000A, 02000000000000000000000B, 02000000000000000000000C, 02000000000000000000000D, 02000000000000000000000E, 02000000000000000000000F, 020000000000000000000010, 040000000000000000000064 /* Assets.xcassets */ ); path = LifeStock; sourceTree = "<group>"; };
+		020000000000000000000014 /* LifeStockWidget */ = {isa = PBXGroup; children = ( 060000000000000000000000 /* LifeStockWidget.swift */, 060000000000000000000001 /* LifeStockWidgetBundle.swift */, 060000000000000000000002 /* SummaryStore.swift */, 060000000000000000000064 /* Assets.xcassets */ ); path = LifeStockWidget; sourceTree = "<group>"; };
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8C0000000000000000000040 /* LifeStock */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8C0000000000000000000051 /* Build configuration list for PBXNativeTarget "LifeStock" */;
-			buildPhases = (
-				8C0000000000000000000090 /* Sources */,
-				8C0000000000000000000091 /* Frameworks */,
-				8C0000000000000000000092 /* Resources */,
-				8C0000000000000000000096 /* Embed App Extensions */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				8C00000000000000000000A2 /* PBXTargetDependency */,
-			);
-			name = LifeStock;
-			packageProductDependencies = (
-			);
-			productName = LifeStock;
-			productReference = 8C0000000000000000000020 /* LifeStock.app */;
-			productType = "com.apple.product-type.application";
-		};
-		8C0000000000000000000041 /* LifeStockWidget */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8C0000000000000000000052 /* Build configuration list for PBXNativeTarget "LifeStockWidget" */;
-			buildPhases = (
-				8C0000000000000000000093 /* Sources */,
-				8C0000000000000000000094 /* Frameworks */,
-				8C0000000000000000000095 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = LifeStockWidget;
-			packageProductDependencies = (
-			);
-			productName = LifeStockWidget;
-			productReference = 8C0000000000000000000021 /* LifeStockWidget.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
+		090000000000000000000001 /* LifeStock */ = {isa = PBXNativeTarget; buildConfigurationList = 0B0000000000000000000001 /* Build configuration list for PBXNativeTarget "LifeStock" */; buildPhases = ( 080000000000000000000001 /* Sources */, 080000000000000000000002 /* Frameworks */, 080000000000000000000003 /* Resources */, 080000000000000000000004 /* Embed App Extensions */, ); buildRules = ( ); dependencies = ( 0A0000000000000000000002 /* PBXTargetDependency */, ); name = LifeStock; productName = LifeStock; productReference = 030000000000000000000001 /* LifeStock.app */; productType = "com.apple.product-type.application"; };
+		090000000000000000000002 /* LifeStockWidget */ = {isa = PBXNativeTarget; buildConfigurationList = 0B0000000000000000000002 /* Build configuration list for PBXNativeTarget "LifeStockWidget" */; buildPhases = ( 080000000000000000000005 /* Sources */, 080000000000000000000006 /* Frameworks */, 080000000000000000000007 /* Resources */, ); buildRules = ( ); dependencies = ( ); name = LifeStockWidget; productName = LifeStockWidget; productReference = 030000000000000000000002 /* LifeStockWidget.appex */; productType = "com.apple.product-type.app-extension"; };
 /* End PBXNativeTarget section */
 
 /* Begin PBXContainerItemProxy section */
-		8C00000000000000000000A0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8C0000000000000000000001 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8C0000000000000000000041;
-			remoteInfo = LifeStockWidget;
-		};
+		0A0000000000000000000001 /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = 010000000000000000000000 /* Project object */; proxyType = 1; remoteGlobalIDString = 090000000000000000000002; remoteInfo = LifeStockWidget; };
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXTargetDependency section */
-		8C00000000000000000000A2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8C0000000000000000000041 /* LifeStockWidget */;
-			targetProxy = 8C00000000000000000000A0 /* PBXContainerItemProxy */;
-		};
+		0A0000000000000000000002 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = 090000000000000000000002 /* LifeStockWidget */; targetProxy = 0A0000000000000000000001 /* PBXContainerItemProxy */; };
 /* End PBXTargetDependency section */
 
 /* Begin PBXProject section */
-		8C0000000000000000000001 /* Project object */ = {
+		010000000000000000000000 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1600;
+				LastSwiftUpdateCheck = 1510;
+				LastUpgradeCheck = 1510;
 				TargetAttributes = {
-					8C0000000000000000000040 = {
-						CreatedOnToolsVersion = 16.0;
-					};
-					8C0000000000000000000041 = {
-						CreatedOnToolsVersion = 16.0;
-					};
+					090000000000000000000001 = { CreatedOnToolsVersion = 15.1; };
+					090000000000000000000002 = { CreatedOnToolsVersion = 15.1; };
 				};
 			};
-			buildConfigurationList = 8C0000000000000000000050 /* Build configuration list for PBXProject */;
-			compatibilityVersion = "Xcode 3.2";
+			buildConfigurationList = 0B0000000000000000000000 /* Build configuration list for PBXProject */;
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = "zh-Hans";
 			hasScannedForEncodings = 0;
-			knownRegions = (
-				"zh-Hans",
-				Base,
-			);
-			mainGroup = 8C0000000000000000000010;
-			preferredProjectObjectVersion = 77;
-			productRefGroup = 8C0000000000000000000011 /* Products */;
+			knownRegions = ( "zh-Hans", Base, );
+			mainGroup = 020000000000000000000001;
+			productRefGroup = 020000000000000000000002 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
-			targets = (
-				8C0000000000000000000040 /* LifeStock */,
-				8C0000000000000000000041 /* LifeStockWidget */,
-			);
+			targets = ( 090000000000000000000001 /* LifeStock */, 090000000000000000000002 /* LifeStockWidget */, );
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		8C0000000000000000000090 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8C0000000000000000000093 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
+		080000000000000000000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( 050000000000000000000000 /* AppTheme.swift in Sources */, 050000000000000000000001 /* LifeStockApp.swift in Sources */, 050000000000000000000002 /* RootView.swift in Sources */, 050000000000000000000003 /* ItemIntents.swift in Sources */, 050000000000000000000004 /* ItemCard.swift in Sources */, 050000000000000000000005 /* SharedComponents.swift in Sources */, 050000000000000000000006 /* ForecastEngine.swift in Sources */, 050000000000000000000007 /* InsightEngine.swift in Sources */, 050000000000000000000008 /* ItemSnapshot.swift in Sources */, 050000000000000000000009 /* Enums.swift in Sources */, 05000000000000000000000A /* LifeItem.swift in Sources */, 05000000000000000000000B /* PurchaseRecord.swift in Sources */, 05000000000000000000000C /* SupportingModels.swift in Sources */, 05000000000000000000000D /* ExportService.swift in Sources */, 05000000000000000000000E /* ImageStore.swift in Sources */, 05000000000000000000000F /* NotificationService.swift in Sources */, 050000000000000000000010 /* OCRService.swift in Sources */, 050000000000000000000011 /* SeedData.swift in Sources */, 050000000000000000000012 /* SummaryRefresh.swift in Sources */, 050000000000000000000013 /* SummaryStore.swift in Sources */, 050000000000000000000014 /* AchievementsView.swift in Sources */, 050000000000000000000015 /* HomeView.swift in Sources */, 050000000000000000000016 /* InsightsView.swift in Sources */, 050000000000000000000017 /* ItemDetailView.swift in Sources */, 050000000000000000000018 /* ItemEditView.swift in Sources */, 050000000000000000000019 /* LibraryView.swift in Sources */, 05000000000000000000001A /* MerchantView.swift in Sources */, 05000000000000000000001B /* OnboardingView.swift in Sources */, 05000000000000000000001C /* ProfileView.swift in Sources */, 05000000000000000000001D /* PurchaseEditSheet.swift in Sources */, 05000000000000000000001E /* QuickAddSheet.swift in Sources */, 05000000000000000000001F /* ReceiptScannerView.swift in Sources */, 050000000000000000000020 /* ReminderCenterView.swift in Sources */, 050000000000000000000021 /* RestockSheet.swift in Sources */ ); runOnlyForDeploymentPostprocessing = 0; };
+		080000000000000000000005 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( 070000000000000000000000 /* LifeStockWidget.swift in Sources */, 070000000000000000000001 /* LifeStockWidgetBundle.swift in Sources */, 070000000000000000000002 /* SummaryStore.swift in Sources */ ); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8C0000000000000000000091 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8C0000000000000000000094 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
+		080000000000000000000002 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+		080000000000000000000006 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXResourcesBuildPhase section */
-		8C0000000000000000000092 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8C0000000000000000000095 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
+		080000000000000000000003 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( 050000000000000000000064 /* Assets.xcassets in Resources */, ); runOnlyForDeploymentPostprocessing = 0; };
+		080000000000000000000007 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( 070000000000000000000064 /* WidgetAssets.xcassets in Resources */, ); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		8C0000000000000000000096 /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				8C00000000000000000000A1 /* LifeStockWidget.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
+		080000000000000000000004 /* Embed App Extensions */ = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = ""; dstSubfolderSpec = 13; files = ( 050000000000000000000065 /* LifeStockWidget.appex in Embed App Extensions */, ); name = "Embed App Extensions"; runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		8C0000000000000000000060 /* Project: Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSG_SEND = YES;
-				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+		/* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+					ALWAYS_SEARCH_USER_PATHS = NO;
+					ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+					CLANG_ANALYZER_NONNULL = YES;
+					CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+					CLANG_ENABLE_MODULES = YES;
+					CLANG_ENABLE_OBJC_ARC = YES;
+					CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+					CLANG_WARN_BOOL_CONVERSION = YES;
+					CLANG_WARN_COMMA = YES;
+					CLANG_WARN_CONSTANT_CONVERSION = YES;
+					CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+					CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+					CLANG_WARN_EMPTY_BODY = YES;
+					CLANG_WARN_ENUM_CONVERSION = YES;
+					CLANG_WARN_INFINITE_RECURSION = YES;
+					CLANG_WARN_INT_CONVERSION = YES;
+					CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+					CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+					CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+					CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+					CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+					CLANG_WARN_STRICT_PROTOTYPES = YES;
+					CLANG_WARN_SUSPICIOUS_MOVE = YES;
+					CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+					CLANG_WARN_UNREACHABLE_CODE = YES;
+					COPY_PHASE_STRIP = NO;
+					ENABLE_STRICT_OBJC_MSG_SEND = YES;
+					ENABLE_USER_SCRIPT_SANDBOXING = YES;
+					GCC_C_LANGUAGE_STANDARD = gnu17;
+					GCC_NO_COMMON_BLOCKS = YES;
+					GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+					GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+					GCC_WARN_UNDECLARED_SELECTOR = YES;
+					GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+					GCC_WARN_UNUSED_FUNCTION = YES;
+					GCC_WARN_UNUSED_VARIABLE = YES;
+					IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+					MTL_FAST_MATH = YES;
+					SDKROOT = iphoneos;
+					SWIFT_VERSION = 5.0;
+					DEBUG_INFORMATION_FORMAT = dwarf;
+					ENABLE_TESTABILITY = YES;
+					MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+					ONLY_ACTIVE_ARCH = YES;
+					SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+					SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				};
+				name = Debug;
 			};
-			name = Debug;
-		};
-		8C0000000000000000000061 /* Project: Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSG_SEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				VALIDATE_PRODUCT = YES;
-				SWIFT_VERSION = 5.0;
+		/* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+					ALWAYS_SEARCH_USER_PATHS = NO;
+					ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+					CLANG_ANALYZER_NONNULL = YES;
+					CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+					CLANG_ENABLE_MODULES = YES;
+					CLANG_ENABLE_OBJC_ARC = YES;
+					CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+					CLANG_WARN_BOOL_CONVERSION = YES;
+					CLANG_WARN_COMMA = YES;
+					CLANG_WARN_CONSTANT_CONVERSION = YES;
+					CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+					CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+					CLANG_WARN_EMPTY_BODY = YES;
+					CLANG_WARN_ENUM_CONVERSION = YES;
+					CLANG_WARN_INFINITE_RECURSION = YES;
+					CLANG_WARN_INT_CONVERSION = YES;
+					CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+					CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+					CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+					CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+					CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+					CLANG_WARN_STRICT_PROTOTYPES = YES;
+					CLANG_WARN_SUSPICIOUS_MOVE = YES;
+					CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+					CLANG_WARN_UNREACHABLE_CODE = YES;
+					COPY_PHASE_STRIP = NO;
+					ENABLE_STRICT_OBJC_MSG_SEND = YES;
+					ENABLE_USER_SCRIPT_SANDBOXING = YES;
+					GCC_C_LANGUAGE_STANDARD = gnu17;
+					GCC_NO_COMMON_BLOCKS = YES;
+					GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+					GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+					GCC_WARN_UNDECLARED_SELECTOR = YES;
+					GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+					GCC_WARN_UNUSED_FUNCTION = YES;
+					GCC_WARN_UNUSED_VARIABLE = YES;
+					IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+					MTL_FAST_MATH = YES;
+					SDKROOT = iphoneos;
+					SWIFT_VERSION = 5.0;
+					DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+					ENABLE_NS_ASSERTIONS = NO;
+					MTL_ENABLE_DEBUG_INFO = NO;
+					SWIFT_COMPILATION_MODE = wholemodule;
+					VALIDATE_PRODUCT = YES;
+				};
+				name = Release;
 			};
-			name = Release;
-		};
-		8C0000000000000000000070 /* LifeStock: Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "生活余量管家";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "LifeStock 需要访问相册，以便为物品添加图片或扫描小票。仅在本地保存，不会上传。";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.lifestock.app";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
+		/* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+					ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+					ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+					CODE_SIGN_IDENTITY = "-";
+					CODE_SIGN_STYLE = Automatic;
+					CURRENT_PROJECT_VERSION = 1;
+					ENABLE_PREVIEWS = YES;
+					GENERATE_INFOPLIST_FILE = YES;
+					INFOPLIST_KEY_CFBundleDisplayName = "生活余量管家";
+					INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+					INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "LifeStock 需要访问相册，以便为物品添加图片或扫描小票。仅在本地保存，不会上传。";
+					INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+					INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+					INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+					INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+					INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+					LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks",);
+					MARKETING_VERSION = 1.0;
+					PRODUCT_BUNDLE_IDENTIFIER = "com.lifestock.app";
+					PRODUCT_NAME = $(TARGET_NAME);
+					SWIFT_EMIT_LOC_STRINGS = YES;
+				};
+				name = Debug;
 			};
-			name = Debug;
-		};
-		8C0000000000000000000071 /* LifeStock: Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "生活余量管家";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "LifeStock 需要访问相册，以便为物品添加图片或扫描小票。仅在本地保存，不会上传。";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.lifestock.app";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
+		/* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+					ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+					ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+					CODE_SIGN_IDENTITY = "-";
+					CODE_SIGN_STYLE = Automatic;
+					CURRENT_PROJECT_VERSION = 1;
+					ENABLE_PREVIEWS = YES;
+					GENERATE_INFOPLIST_FILE = YES;
+					INFOPLIST_KEY_CFBundleDisplayName = "生活余量管家";
+					INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+					INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "LifeStock 需要访问相册，以便为物品添加图片或扫描小票。仅在本地保存，不会上传。";
+					INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+					INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+					INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+					INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+					INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+					LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks",);
+					MARKETING_VERSION = 1.0;
+					PRODUCT_BUNDLE_IDENTIFIER = "com.lifestock.app";
+					PRODUCT_NAME = $(TARGET_NAME);
+					SWIFT_EMIT_LOC_STRINGS = YES;
+				};
+				name = Release;
 			};
-			name = Release;
-		};
-		8C0000000000000000000080 /* LifeStockWidget: Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = LifeStockWidget;
-				INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.widgetkit-extension";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.lifestock.app.LifeStockWidget";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+		/* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+					ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+					ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+					CODE_SIGN_IDENTITY = "-";
+					CODE_SIGN_STYLE = Automatic;
+					CURRENT_PROJECT_VERSION = 1;
+					GENERATE_INFOPLIST_FILE = YES;
+					INFOPLIST_KEY_CFBundleDisplayName = LifeStockWidget;
+					INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.widgetkit-extension";
+					IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+					LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@executable_path/../../Frameworks",);
+					MARKETING_VERSION = 1.0;
+					PRODUCT_BUNDLE_IDENTIFIER = "com.lifestock.app.LifeStockWidget";
+					PRODUCT_NAME = $(TARGET_NAME);
+					SKIP_INSTALL = YES;
+					SWIFT_EMIT_LOC_STRINGS = YES;
+					SWIFT_VERSION = 5.0;
+					TARGETED_DEVICE_FAMILY = "1,2";
+				};
+				name = Debug;
 			};
-			name = Debug;
-		};
-		8C0000000000000000000081 /* LifeStockWidget: Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = LifeStockWidget;
-				INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.widgetkit-extension";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.lifestock.app.LifeStockWidget";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+		/* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+					ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+					ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+					CODE_SIGN_IDENTITY = "-";
+					CODE_SIGN_STYLE = Automatic;
+					CURRENT_PROJECT_VERSION = 1;
+					GENERATE_INFOPLIST_FILE = YES;
+					INFOPLIST_KEY_CFBundleDisplayName = LifeStockWidget;
+					INFOPLIST_KEY_NSExtension_NSExtensionPointIdentifier = "com.apple.widgetkit-extension";
+					IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+					LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@executable_path/../../Frameworks",);
+					MARKETING_VERSION = 1.0;
+					PRODUCT_BUNDLE_IDENTIFIER = "com.lifestock.app.LifeStockWidget";
+					PRODUCT_NAME = $(TARGET_NAME);
+					SKIP_INSTALL = YES;
+					SWIFT_EMIT_LOC_STRINGS = YES;
+					SWIFT_VERSION = 5.0;
+					TARGETED_DEVICE_FAMILY = "1,2";
+				};
+				name = Release;
 			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8C0000000000000000000050 /* Build configuration list for PBXProject */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8C0000000000000000000060 /* Debug */,
-				8C0000000000000000000061 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8C0000000000000000000051 /* Build configuration list for PBXNativeTarget "LifeStock" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8C0000000000000000000070 /* Debug */,
-				8C0000000000000000000071 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8C0000000000000000000052 /* Build configuration list for PBXNativeTarget "LifeStockWidget" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8C0000000000000000000080 /* Debug */,
-				8C0000000000000000000081 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
+		0B0000000000000000000000 /* Build configuration list for PBXProject */ = {isa = XCConfigurationList; buildConfigurations = ( 0C000000000000000000000A /* Debug */, 0C000000000000000000000B /* Release */, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		0B0000000000000000000001 /* Build configuration list for PBXNativeTarget "LifeStock" */ = {isa = XCConfigurationList; buildConfigurations = ( 0C0000000000000000000014 /* Debug */, 0C0000000000000000000015 /* Release */, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		0B0000000000000000000002 /* Build configuration list for PBXNativeTarget "LifeStockWidget" */ = {isa = XCConfigurationList; buildConfigurations = ( 0C000000000000000000001E /* Debug */, 0C000000000000000000001F /* Release */, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 /* End XCConfigurationList section */
 	};
-	rootObject = 8C0000000000000000000001 /* Project object */;
+	rootObject = 010000000000000000000000 /* Project object */;
 }
