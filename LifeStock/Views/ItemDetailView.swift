@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import UIKit
+import Charts
 
 /// 物品详情页：统一查看物品全貌。
 ///
@@ -274,6 +275,8 @@ struct ItemDetailView: View {
     private var forecastSection: some View {
         let result = ForecastEngine.predictRepurchaseDate(for: item)
         let level = ConfidenceLevel.from(score: result.confidence)
+        let backtest = ForecastEngine.backtest(for: item)
+        let summary = ForecastEngine.backtestSummary(for: item)
         return VStack(alignment: .leading, spacing: 8) {
             Text("复购预测").font(.headline)
             HStack {
@@ -288,6 +291,52 @@ struct ItemDetailView: View {
                 ConfidenceTag(level: level)
             }
             Text(result.note).font(.caption).foregroundStyle(.secondary)
+
+            // 预测 vs 实际双线图
+            if backtest.count >= 2 {
+                Divider().padding(.vertical, 4)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("预测 vs 实际").font(.subheadline.weight(.semibold))
+                    Chart(backtest) { pt in
+                        LineMark(x: .value("日期", pt.date),
+                                 y: .value("天数", pt.predicted))
+                            .foregroundStyle(AppTheme.accent)
+                            .symbol(Square())
+                            .interpolationMethod(.catmullRom)
+                        LineMark(x: .value("日期", pt.date),
+                                 y: .value("天数", pt.actual))
+                            .foregroundStyle(.green)
+                            .symbol(Circle())
+                            .interpolationMethod(.catmullRom)
+                    }
+                    .frame(height: 160)
+                    .chartLegend(position: .bottom) {
+                        HStack(spacing: 16) {
+                            Label("预测", systemImage: "square.fill").foregroundStyle(AppTheme.accent).font(.caption)
+                            Label("实际", systemImage: "circle.fill").foregroundStyle(.green).font(.caption)
+                        }
+                    }
+
+                    if let s = summary {
+                        HStack(spacing: 12) {
+                            metricCell(title: "样本", value: "\(s.sampleCount)")
+                            Divider().frame(height: 28)
+                            metricCell(title: "平均误差", value: String(format: "%.1f 天", s.maeDays))
+                            if let mape = s.mape {
+                                Divider().frame(height: 28)
+                                metricCell(title: "MAPE", value: String(format: "%.0f%%", mape))
+                            }
+                        }
+                        .padding(.top, 4)
+                        Text("平均误差越小、预测越准。MAPE 为平均绝对百分比误差。")
+                            .font(.caption2).foregroundStyle(.tertiary)
+                    }
+                }
+            } else {
+                Text("至少 3 次购买记录后，这里会显示预测 vs 实际对比图。")
+                    .font(.caption).foregroundStyle(.tertiary)
+                    .padding(.top, 2)
+            }
         }
         .padding(AppTheme.pad)
         .background(AppTheme.card, in: RoundedRectangle(cornerRadius: AppTheme.corner))

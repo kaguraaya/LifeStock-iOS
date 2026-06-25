@@ -21,6 +21,7 @@ struct PurchaseEditSheet: View {
     @State private var shipping: String = ""
     @State private var lifeDaysObserved: String = ""
     @State private var note: String = ""
+    @State private var showScanner = false
 
     private var isEditing: Bool { record != nil }
 
@@ -29,6 +30,12 @@ struct PurchaseEditSheet: View {
             Form {
                 Section("购买") {
                     TextField("总价（元）", text: $totalPrice).keyboardType(.decimalPad)
+                    Button {
+                        showScanner = true
+                    } label: {
+                        Label("扫描小票自动填入", systemImage: "doc.text.viewfinder")
+                            .foregroundStyle(AppTheme.accent)
+                    }
                     TextField("数量", text: $quantity).keyboardType(.decimalPad)
                     DatePicker("购买日期", selection: $purchasedAt, displayedComponents: .date)
                 }
@@ -65,6 +72,11 @@ struct PurchaseEditSheet: View {
                 }
             }
             .onAppear { load() }
+            .fullScreenCover(isPresented: $showScanner) {
+                ReceiptScannerView { amount in
+                    totalPrice = String(format: "%.2f", amount)
+                }
+            }
         }
     }
 

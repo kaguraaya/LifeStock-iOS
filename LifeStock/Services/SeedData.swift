@@ -93,6 +93,7 @@ enum SeedData {
             note: "宿舍常备，网购需提前 2 天"
         )
         tissue.thumbnailData = ImageStore.demoThumbnail(symbol: "shippingbox.fill", background: .orange)
+        addPurchase(to: tissue, daysAgo: 90, price: 21.0, pkgQty: 500, observedLife: 30) // 最早一次
         addPurchase(to: tissue, daysAgo: 60, price: 22.0, pkgQty: 500, observedLife: 30) // 单价 0.044 偏贵
         addPurchase(to: tissue, daysAgo: 32, price: 20.0, pkgQty: 500, observedLife: 28) // 0.040 中位
         addPurchase(to: tissue, daysAgo: 4,  price: 18.0, pkgQty: 500, observedLife: nil) // 0.036 便宜，省了

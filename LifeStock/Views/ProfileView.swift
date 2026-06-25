@@ -146,9 +146,14 @@ struct ProfileView: View {
         }
     }
 
-    // MARK: - 管理入口（商家 / 成就）
+    // MARK: - 管理入口（商家 / 成就 / 提醒中心）
     private var manageSection: some View {
         Section("管理") {
+            NavigationLink {
+                ReminderCenterView()
+            } label: {
+                Label("提醒中心", systemImage: "bell.badge")
+            }
             NavigationLink {
                 MerchantView()
             } label: {

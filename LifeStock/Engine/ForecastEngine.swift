@@ -9,6 +9,22 @@ struct ForecastResult {
     var note: String
 }
 
+/// 回测点：某次补货的预测间隔 vs 实际间隔
+struct BacktestPoint: Identifiable {
+    let id = UUID()
+    let date: Date
+    let predicted: Double
+    let actual: Double
+}
+
+/// 回测摘要：MAE / MAPE / 均值
+struct BacktestSummary {
+    let sampleCount: Int
+    let maeDays: Double      // 平均绝对误差（天）
+    let meanDays: Double     // 实际间隔均值
+    let mape: Double?        // 平均绝对百分比误差（%），可能为 nil
+}
+
 /// 核心计算引擎。所有日期/价值/预测算法集中在这里，便于单测与替换。
 ///
 /// 算法分四层（对应设计报告）：
@@ -305,6 +321,54 @@ enum ForecastEngine {
         return ForecastResult(predictedDate: nil, predictedIntervalDays: nil,
                               confidence: 0, maeDays: nil,
                               note: "记录一次购买后即可开始预测")
+    }
+
+    // MARK: - 预测 vs 实际回测
+    /// 回测：对每次补货，用"之前的历史间隔 WMA"预测这次的天数，
+    /// 与"实际相邻购买间隔"对照。用于绘制预测 vs 实际双线图。
+    ///
+    /// 返回结果不含最后一个点（最后一次购买没有"实际间隔"）。
+    static func backtest(for item: LifeItem) -> [BacktestPoint] {
+        let records = item.purchases.sorted { $0.purchasedAt < $1.purchasedAt }
+        guard records.count >= 3 else { return [] }  // 至少 3 条才能形成 1 个预测点 + 1 个实际点
+
+        var points: [BacktestPoint] = []
+        for i in 2..<records.count {
+            // 用 0..<i 的间隔预测第 i 次的到达时间
+            let prior = Array(records.prefix(i))
+            let dates = prior.map { $0.purchasedAt }
+            var gaps: [Double] = []
+            for j in 1..<dates.count {
+                let g = Calendar.current.dateComponents([.day], from: dates[j-1], to: dates[j]).day ?? 0
+                if g > 0 { gaps.append(Double(g)) }
+            }
+            guard let predicted = weightedMovingAverage(gaps) else { continue }
+
+            let actualDays = max(0, Calendar.current.dateComponents([.day],
+                from: records[i-1].purchasedAt,
+                to: records[i].purchasedAt).day ?? 0)
+
+            points.append(BacktestPoint(
+                date: records[i].purchasedAt,
+                predicted: predicted,
+                actual: Double(actualDays)
+            ))
+        }
+        return points
+    }
+
+    /// 回测点的预测准确率摘要
+    static func backtestSummary(for item: LifeItem) -> BacktestSummary? {
+        let points = backtest(for: item)
+        guard !points.isEmpty else { return nil }
+        let errors = points.map { abs($0.predicted - $0.actual) }
+        let mae = errors.reduce(0, +) / Double(errors.count)
+        let mean = points.map { $0.actual }.reduce(0, +) / Double(points.count)
+        let mape: Double? = {
+            let sum = points.reduce(0.0) { $0 + ($1.actual > 0 ? abs($1.predicted - $1.actual) / $1.actual : 0) }
+            return points.contains { $0.actual > 0 } ? (sum / Double(points.count) * 100) : nil
+        }()
+        return BacktestSummary(sampleCount: points.count, maeDays: mae, meanDays: mean, mape: mape)
     }
 
     // MARK: - 提醒层

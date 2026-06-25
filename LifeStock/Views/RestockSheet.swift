@@ -19,6 +19,7 @@ struct RestockSheet: View {
     @State private var coupon: String = ""
     @State private var shipping: String = ""
     @State private var useLastValues: Bool = true
+    @State private var showScanner = false
 
     private var lastRecord: PurchaseRecord? {
         item.purchases.sorted { $0.purchasedAt > $1.purchasedAt }.first
@@ -34,6 +35,12 @@ struct RestockSheet: View {
                         }
                     TextField("总价（元）", text: $totalPrice)
                         .keyboardType(.decimalPad)
+                    Button {
+                        showScanner = true
+                    } label: {
+                        Label("扫描小票自动填入", systemImage: "doc.text.viewfinder")
+                            .foregroundStyle(AppTheme.accent)
+                    }
                     TextField("数量", text: $quantity)
                         .keyboardType(.decimalPad)
                     DatePicker("购买日期", selection: $purchaseDate, displayedComponents: .date)
@@ -65,6 +72,11 @@ struct RestockSheet: View {
             }
             .onAppear {
                 if useLastValues { applyLastValues() }
+            }
+            .fullScreenCover(isPresented: $showScanner) {
+                ReceiptScannerView { amount in
+                    totalPrice = String(format: "%.2f", amount)
+                }
             }
         }
     }

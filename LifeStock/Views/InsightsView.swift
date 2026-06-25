@@ -54,6 +54,7 @@ struct InsightsView: View {
                         categoryChart
                         monthlyChart
                         priceTrendChart
+                        unitPriceCompareChart
                         subscriptionChart
                     }
                 }
@@ -229,6 +230,64 @@ struct InsightsView: View {
         }
     }
 
+    // MARK: 跨物品单价对比
+    private var unitPriceCompareChart: some View {
+        // 取所有消耗类物品的最近单价，按"单位"分组横向比较
+        let data: [UnitPriceRow] = {
+            var rows: [UnitPriceRow] = []
+            for item in items where item.trackingMode == .consumable {
+                guard let unitP = item.unitPrice, unitP > 0 else { continue }
+                let unit = item.unitName ?? "单位"
+                rows.append(UnitPriceRow(name: item.name, unitPrice: unitP, unit: unit))
+            }
+            return rows.sorted { $0.unitPrice < $1.unitPrice }  // 便宜在上
+        }()
+        let minP = data.first?.unitPrice
+        let maxP = data.last?.unitPrice
+
+        return CardSection(title: "单价对比", subtitle: "同类消耗品谁更划算（按最近单价）") {
+            VStack(alignment: .leading, spacing: 8) {
+                if data.isEmpty {
+                    Text("还没有带单价的消耗类物品").font(.subheadline).foregroundStyle(.secondary)
+                } else {
+                    ForEach(Array(data.enumerated()), id: \.element.id) { idx, row in
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text(row.name).font(.subheadline.weight(.medium))
+                                if idx == 0 {
+                                    Text("最划算")
+                                        .font(.caption2.weight(.semibold))
+                                        .padding(.horizontal, 6).padding(.vertical, 2)
+                                        .background(Color.green.opacity(0.15), in: Capsule())
+                                        .foregroundStyle(.green)
+                                }
+                                Spacer()
+                                Text(String(format: "%.3f 元/%@", row.unitPrice, row.unit))
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundStyle(AppTheme.accent)
+                            }
+                            // 横条：相对最贵项的比例
+                            GeometryReader { geo in
+                                let ratio = maxP.map { CGFloat(row.unitPrice / $0) } ?? 0
+                                RoundedRectangle(cornerRadius: 3)
+                                    .fill(idx == 0
+                                          ? AnyShapeStyle(Color.green.opacity(0.6))
+                                          : AnyShapeStyle(AppTheme.accent.opacity(0.5)))
+                                    .frame(width: max(8, geo.size.width * ratio), height: 8)
+                            }
+                            .frame(height: 8)
+                        }
+                        .padding(.vertical, 4)
+                    }
+                    Text("绿色为最便宜的一档。单价越低越划算，但也要结合实际用量与质量。")
+                        .font(.caption2).foregroundStyle(.tertiary)
+                }
+            }
+            .padding(AppTheme.pad)
+            .background(AppTheme.card, in: RoundedRectangle(cornerRadius: AppTheme.corner))
+        }
+    }
+
     // MARK: 订阅成本分布
     private var subscriptionChart: some View {
         let subs = items.filter { $0.trackingMode == .subscription }
@@ -325,6 +384,12 @@ private struct PricePoint: Identifiable {
     let id = UUID()
     let date: Date
     let price: Double
+}
+private struct UnitPriceRow: Identifiable {
+    let id = UUID()
+    let name: String
+    let unitPrice: Double
+    let unit: String
 }
 private struct SubCost: Identifiable {
     let id = UUID()
