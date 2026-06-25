@@ -60,9 +60,15 @@ enum ExportService {
     }
 
     // MARK: - 清理
-    /// 删除所有数据（物品、记录、模板、商家、日志、策略）
+    /// 删除所有数据（物品、记录、模板、商家、日志、策略）+ 所有小票图与物品图
     @MainActor
     static func clearAllData(context: ModelContext) throws {
+        // 先批量删小票图，避免模型删除后丢失路径引用
+        let purchases = try context.fetch(FetchDescriptor<PurchaseRecord>())
+        for r in purchases { ImageStore.remove(relativePath: r.receiptImagePath) }
+        let items = try context.fetch(FetchDescriptor<LifeItem>())
+        for item in items { ImageStore.remove(relativePath: item.imageLocalPath) }
+
         try context.delete(model: PurchaseRecord.self)
         try context.delete(model: UsageLog.self)
         try context.delete(model: ReminderPolicy.self)

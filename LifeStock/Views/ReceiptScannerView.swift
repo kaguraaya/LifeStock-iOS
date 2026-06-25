@@ -5,14 +5,16 @@ import UIKit
 /// 小票扫描：选图 → Vision 识别 → 解析金额 → 选择填入。
 ///
 /// 作为 fullScreenCover 弹出，识别完成后通过 onPick 回调金额并关闭。
+/// 同时把小票原图落盘，返回相对路径，供调用方绑定到 PurchaseRecord.receiptImagePath。
 /// 识别全程在设备端完成，图片不上传。
 struct ReceiptScannerView: View {
 
     @Environment(\.dismiss) private var dismiss
-    var onPick: (Double) -> Void
+    var onPick: (Double, String?) -> Void   // (金额, 小票图片相对路径)
 
     @State private var photoItem: PhotosPickerItem?
     @State private var image: UIImage?
+    @State private var receiptPath: String?
     @State private var recognizedLines: [String] = []
     @State private var amounts: [Double] = []
     @State private var isProcessing = false
@@ -87,7 +89,7 @@ struct ReceiptScannerView: View {
                 .font(.subheadline.weight(.semibold))
             ForEach(amounts, id: \.self) { amt in
                 Button {
-                    onPick(amt)
+                    onPick(amt, receiptPath)
                     dismiss()
                 } label: {
                     HStack {
@@ -131,7 +133,12 @@ struct ReceiptScannerView: View {
                     self.image = uiImage
                     self.recognizedLines = []
                     self.amounts = []
+                    self.receiptPath = nil
                     self.isProcessing = true
+                    // 同步落盘：把小票原图存到 Application Support，记下相对路径
+                    if let saved = ImageStore.save(image: uiImage) {
+                        self.receiptPath = saved.relativePath
+                    }
                     Task { await self.runOCR(uiImage) }
                 }
             }

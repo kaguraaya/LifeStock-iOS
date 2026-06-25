@@ -22,6 +22,7 @@ struct PurchaseEditSheet: View {
     @State private var lifeDaysObserved: String = ""
     @State private var note: String = ""
     @State private var showScanner = false
+    @State private var scannedReceiptPath: String?
 
     private var isEditing: Bool { record != nil }
 
@@ -73,8 +74,9 @@ struct PurchaseEditSheet: View {
             }
             .onAppear { load() }
             .fullScreenCover(isPresented: $showScanner) {
-                ReceiptScannerView { amount in
+                ReceiptScannerView { amount, path in
                     totalPrice = String(format: "%.2f", amount)
+                    scannedReceiptPath = path
                 }
             }
         }
@@ -89,6 +91,7 @@ struct PurchaseEditSheet: View {
         shipping = r.shippingFee.map { String($0) } ?? ""
         lifeDaysObserved = r.lifeDaysObserved.map { String($0) } ?? ""
         note = r.note ?? ""
+        scannedReceiptPath = r.receiptImagePath   // 回填：编辑时保留已绑定的小票
     }
 
     private func previewText() -> String {
@@ -122,6 +125,7 @@ struct PurchaseEditSheet: View {
             r.unitPrice = unitP
             r.lifeDaysObserved = Int(lifeDaysObserved)
             r.note = note.isEmpty ? nil : note
+            if let scanned = scannedReceiptPath { r.receiptImagePath = scanned }
         } else {
             let r = PurchaseRecord(
                 purchasedAt: purchasedAt,
@@ -134,7 +138,8 @@ struct PurchaseEditSheet: View {
                 effectiveCost: eff,
                 lifeDaysObserved: Int(lifeDaysObserved),
                 sourceType: .offline,
-                note: note.isEmpty ? nil : note
+                note: note.isEmpty ? nil : note,
+                receiptImagePath: scannedReceiptPath
             )
             r.item = item
             item.purchases.append(r)
@@ -156,6 +161,7 @@ struct PurchaseEditSheet: View {
             item.purchases.remove(at: idx)
         }
         context.delete(r)
+        if let path = r.receiptImagePath { ImageStore.remove(relativePath: path) }
         item.updatedAt = .now
         if item.trackingMode == .consumable {
             ForecastEngine.predictRepurchaseDate(for: item)

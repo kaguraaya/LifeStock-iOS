@@ -31,4 +31,6 @@ fastlane/test_output
 
 # Local design notes / dev docs (kept local, not part of deliverable code)
 LifeStock 功能与界面深度设计报告.md
+*.docx
+~$*.docx
 NOTES.md

@@ -418,6 +418,10 @@ enum ForecastEngine {
     }
 
     /// 综合物品的提醒日期（结合其 ReminderPolicy 与 shippingLeadDays）
+    ///
+    /// 口径说明：shippingLeadDays 表示"从决定购买到拿到手所需天数"。
+    /// 该字段应在物品关联商家时由商家的 leadDays 同步写入（见
+    /// MerchantStore 或编辑流程），从而让商家提前期真正参与提醒计算。
     static func reminderDate(for item: LifeItem) -> Date? {
         guard let target = targetDate(for: item) else { return nil }
         let policy = item.reminderPolicy ?? ReminderPolicy.defaultPolicy
@@ -428,5 +432,21 @@ enum ForecastEngine {
             merchantLeadDays: item.shippingLeadDays,
             bufferDays: policy.bufferDays
         )
+    }
+
+    /// 物品的"建议下单日期"= 目标日 - 物流提前期 - 缓冲天数。
+    /// 专为首页"未来 N 天建议下单"使用：哪怕物品本身还有 10 天才用完，
+    /// 如果物流要 2 天、缓冲 1 天，则建议下单日是 now+7，仍应纳入推荐。
+    static func suggestedPurchaseDate(for item: LifeItem) -> Date? {
+        guard let target = targetDate(for: item) else { return nil }
+        let buffer = item.reminderPolicy?.bufferDays ?? 1
+        let offset = -(item.shippingLeadDays + buffer)
+        return Calendar.current.date(byAdding: .day, value: offset, to: target) ?? target
+    }
+
+    /// 距"建议下单日"还剩几天（负数=已过建议下单日，应尽快下单）
+    static func daysUntilSuggestedPurchase(for item: LifeItem, now: Date = .now) -> Int? {
+        guard let d = suggestedPurchaseDate(for: item) else { return nil }
+        return daysLeft(from: now, to: d)
     }
 }

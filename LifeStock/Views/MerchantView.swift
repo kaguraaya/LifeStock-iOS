@@ -161,17 +161,33 @@ struct MerchantEditSheet: View {
 
     private func save() {
         let trimmedName = name.trimmingCharacters(in: .whitespaces)
+        let target: Merchant
         if let m = merchant {
             m.name = trimmedName
             m.type = type
             m.leadDays = leadDays
             m.deeplinkURL = deeplink.isEmpty ? nil : deeplink
             m.isFavorite = isFavorite
+            target = m
         } else {
             let m = Merchant(name: trimmedName, type: type, leadDays: leadDays,
                              deeplinkURL: deeplink.isEmpty ? nil : deeplink, isFavorite: isFavorite)
             context.insert(m)
+            target = m
         }
+
+        // 把该商家的 leadDays 同步到所有以其为默认来源的物品的 shippingLeadDays，
+        // 让商家提前期真正参与提醒计算。
+        let merchantID = target.id
+        let items = (try? context.fetch(FetchDescriptor<LifeItem>(
+            predicate: #Predicate { $0.purchaseChannelID == merchantID }
+        ))) ?? []
+        for item in items {
+            item.shippingLeadDays = leadDays
+            item.updatedAt = .now
+            NotificationService.shared.schedule(for: item)
+        }
+        SummaryRefresh.refresh(context: context)
         try? context.save()
         dismiss()
     }

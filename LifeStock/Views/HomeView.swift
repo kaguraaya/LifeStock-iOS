@@ -124,31 +124,54 @@ struct HomeView: View {
 
     // MARK: 建议购买
     private var suggestBuySection: some View {
-        // 未来 7 天内需要处理、且尚未购买的物品
-        let snapshots = items
-            .map { ItemSnapshotBuilder.snapshot(for: $0) }
-            .filter { snap in
-                guard let d = snap.daysLeft else { return false }
-                return d >= 0 && d <= 7
+        // 只针对"需要补货的消耗类"：用"建议下单日 = 目标日 - 物流提前期 - 缓冲"。
+        // 即使物品本身还有 10 天才用完，若物流要 2 天、缓冲 1 天，
+        // 建议下单日就是 now+7，仍应纳入推荐。到期/订阅类不在此展示。
+        let candidates: [(LifeItem, Int)] = items
+            .filter { $0.trackingMode == .consumable }
+            .compactMap { item in
+                guard let d = ForecastEngine.daysUntilSuggestedPurchase(for: item) else { return nil }
+                return (item, d)
             }
-            .sorted { ($0.daysLeft ?? 0) < ($1.daysLeft ?? 0) }
+            .filter { $0.1 >= 0 && $0.1 <= 7 }   // 建议下单日在未来 0-7 天内
+            .sorted { $0.1 < $1.1 }
 
         return CardSection(title: "未来 7 天建议下单",
-                           subtitle: "结合购买来源的物流提前期") {
-            if snapshots.isEmpty {
-                Text("暂无即将到期的物品，节奏不错。")
+                           subtitle: candidates.isEmpty
+                                     ? "近期无需补货的消耗品"
+                                     : "已扣除物流提前期与缓冲天数") {
+            if candidates.isEmpty {
+                Text("近期没有需要补货的消耗品，节奏不错。")
                     .font(.subheadline).foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 8)
             } else {
                 VStack(spacing: 6) {
-                    ForEach(snapshots) { snap in
-                        if let item = item(for: snap.id) {
-                            CompactItemRow(snapshot: snap) {
-                                selectedItem = item
+                    ForEach(candidates, id: \.0.id) { item, days in
+                        Button {
+                            selectedItem = item
+                        } label: {
+                            HStack(spacing: 10) {
+                                Image(systemName: "cart.fill")
+                                    .foregroundStyle(AppTheme.accent)
+                                    .frame(width: 22)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(item.name).font(.subheadline.weight(.medium)).lineLimit(1)
+                                    Text(days == 0 ? "今天建议下单"
+                                                       : "建议 \(days) 天内下单")
+                                        .font(.caption).foregroundStyle(AppTheme.accent)
+                                }
+                                Spacer()
+                                if item.shippingLeadDays > 0 {
+                                    Text("物流 \(item.shippingLeadDays) 天")
+                                        .font(.caption2).foregroundStyle(.secondary)
+                                }
                             }
-                            Divider()
+                            .padding(.vertical, 6)
+                            .contentShape(Rectangle())
                         }
+                        .buttonStyle(.plain)
+                        Divider()
                     }
                 }
             }

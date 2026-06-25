@@ -83,44 +83,56 @@ enum SeedData {
     static func seedDemoData(context: ModelContext, now: Date = .now) {
         let cal = Calendar.current
 
-        // ---- 场景 1：宿舍常用品 ----
-        // 纸巾：3 次历史购买，间隔 30/28/26 -> WMA ≈ 27.4，预测 3 天后用完
-        // 价格刻意不同，让"节省统计"有数据：中位单价 0.040，本次 0.036 -> 省了约 2 元
+        // ---- 场景 1：宿舍常用品（消耗类）----
+        // 纸巾：4 次历史购买，间隔 30/29/28 -> WMA(0.5,0.3,0.2)=28.7，最后购买 25 天前
+        // 预测用完日 = now-25 + 28.7 ≈ now+3.7，真正进入"未来7天建议下单"。
+        // 京东提前期 2 天 + 缓冲 1 天 -> 建议下单日 = now+3.7-3 ≈ now+0.7（今明天就该下单）。
         let tissue = makeItem(
             name: "清风纸巾", mode: .consumable, category: .daily,
             purchasePrice: 18.0, unitName: "抽", packageQuantity: 500,
-            expectedUseDays: 27, shippingLeadDays: 2, now: now,
-            note: "宿舍常备，网购需提前 2 天"
+            expectedUseDays: 28, shippingLeadDays: 2, now: now,
+            note: "宿舍常备，常从京东购买，需提前 2 天物流"
         )
         tissue.thumbnailData = ImageStore.demoThumbnail(symbol: "shippingbox.fill", background: .orange)
-        addPurchase(to: tissue, daysAgo: 90, price: 21.0, pkgQty: 500, observedLife: 30) // 最早一次
-        addPurchase(to: tissue, daysAgo: 60, price: 22.0, pkgQty: 500, observedLife: 30) // 单价 0.044 偏贵
-        addPurchase(to: tissue, daysAgo: 32, price: 20.0, pkgQty: 500, observedLife: 28) // 0.040 中位
-        addPurchase(to: tissue, daysAgo: 4,  price: 18.0, pkgQty: 500, observedLife: nil) // 0.036 便宜，省了
+        addPurchase(to: tissue, daysAgo: 112, price: 21.0, pkgQty: 500, observedLife: 30, now: now) // 单价0.042
+        addPurchase(to: tissue, daysAgo: 82, price: 22.0, pkgQty: 500, observedLife: 30, now: now) // 0.044 偏贵
+        addPurchase(to: tissue, daysAgo: 53, price: 20.0, pkgQty: 500, observedLife: 29, now: now) // 0.040 中位
+        addPurchase(to: tissue, daysAgo: 25, price: 18.0, pkgQty: 500, observedLife: nil, now: now) // 0.036 便宜，省了
         context.insert(tissue)
 
-        // 沐浴露：预计 6 天后用完
+        // 沐浴露：2 次历史购买，间隔 46 天 -> WMA(0.6,0.4)=46，最后购买 40 天前
+        // 预测用完日 = now-40 + 46 = now+6，进入"未来7天"。
         let showerGel = makeItem(
             name: "舒肤佳沐浴露", mode: .consumable, category: .daily,
-            purchasePrice: 39, unitName: "ml", packageQuantity: 500,
-            expectedUseDays: 45, now: now
+            purchasePrice: 36, unitName: "ml", packageQuantity: 500,
+            expectedUseDays: 46, now: now
         )
         showerGel.thumbnailData = ImageStore.demoThumbnail(symbol: "drop.fill", background: .teal)
-        addPurchase(to: showerGel, daysAgo: 90, price: 45, pkgQty: 500, observedLife: nil)
-        addPurchase(to: showerGel, daysAgo: 40, price: 39, pkgQty: 500, observedLife: nil) // 便宜
+        addPurchase(to: showerGel, daysAgo: 86, price: 45, pkgQty: 500, observedLife: nil, now: now) // 偏贵
+        addPurchase(to: showerGel, daysAgo: 40, price: 36, pkgQty: 500, observedLife: nil, now: now) // 便宜
         context.insert(showerGel)
 
-        // 牙膏：还有 20 天
+        // 牙膏：还远，不进7天（用于对比）。间隔≈90天，最后购买50天前 -> 还有40天
         let toothpaste = makeItem(
             name: "黑人牙膏", mode: .consumable, category: .daily,
             purchasePrice: 15, unitName: "支", packageQuantity: 1,
             expectedUseDays: 90, now: now
         )
-        addPurchase(to: toothpaste, daysAgo: 70, price: 15, pkgQty: 1, observedLife: nil)
+        addPurchase(to: toothpaste, daysAgo: 140, price: 15, pkgQty: 1, observedLife: 90, now: now)
+        addPurchase(to: toothpaste, daysAgo: 50, price: 15, pkgQty: 1, observedLife: nil, now: now)
         context.insert(toothpaste)
 
+        // 洗衣液：消耗类，还远，补充场景多样性
+        let detergent = makeItem(
+            name: "蓝月亮洗衣液", mode: .consumable, category: .daily,
+            purchasePrice: 29, unitName: "袋", packageQuantity: 1,
+            expectedUseDays: 60, now: now
+        )
+        addPurchase(to: detergent, daysAgo: 20, price: 29, pkgQty: 1, observedLife: nil, now: now)
+        context.insert(detergent)
+
         // ---- 场景 2：期限风险 ----
-        // 牛奶：今天到期
+        // 牛奶：今天到期（到期类，进"今天最该处理"但不属于"建议下单"）
         let milk = makeItem(
             name: "特仑苏牛奶", mode: .expiry, category: .food,
             purchasePrice: 8, unitName: "盒", packageQuantity: 1,
@@ -128,7 +140,7 @@ enum SeedData {
             now: now
         )
         milk.thumbnailData = ImageStore.demoThumbnail(symbol: "cup.and.saucer.fill", background: .blue)
-        addPurchase(to: milk, daysAgo: 5, price: 8, pkgQty: 1, observedLife: nil)
+        addPurchase(to: milk, daysAgo: 5, price: 8, pkgQty: 1, observedLife: nil, now: now)
         context.insert(milk)
 
         // 药品：已过期 2 天
@@ -138,7 +150,7 @@ enum SeedData {
             expiryDate: cal.date(byAdding: .day, value: -2, to: now),
             now: now, note: "感冒备用，注意有效期"
         )
-        addPurchase(to: medicine, daysAgo: 120, price: 22, pkgQty: 1, observedLife: nil)
+        addPurchase(to: medicine, daysAgo: 120, price: 22, pkgQty: 1, observedLife: nil, now: now)
         context.insert(medicine)
 
         // 学生证：14 天后到期（需年审）
@@ -150,7 +162,7 @@ enum SeedData {
         )
         context.insert(studentID)
 
-        // B站会员：5 天后续费
+        // B站会员：5 天后续费（订阅类）
         let biliVIP = makeItem(
             name: "B站大会员", mode: .subscription, category: .subscription,
             purchasePrice: 88, unitName: nil, packageQuantity: nil,
@@ -158,7 +170,7 @@ enum SeedData {
             nextBillingDate: cal.date(byAdding: .day, value: 5, to: now),
             now: now, note: "季度订阅"
         )
-        addPurchase(to: biliVIP, daysAgo: 85, price: 88, pkgQty: nil, observedLife: nil, source: .subscription)
+        addPurchase(to: biliVIP, daysAgo: 85, price: 88, pkgQty: nil, observedLife: nil, source: .subscription, now: now)
         context.insert(biliVIP)
 
         // ---- 场景 3：价值管理 ----
@@ -172,21 +184,31 @@ enum SeedData {
         earphone.thumbnailData = ImageStore.demoThumbnail(symbol: "airpodspro", background: .gray)
         context.insert(earphone)
 
-        // 云盘订阅：年度
+        // 鼠标：耐用品，折旧（补充价值管理场景）
+        let mouse = makeItem(
+            name: "罗技 M330 鼠标", mode: .durable, category: .device,
+            purchasePrice: nil, devicePrice: 129, residualValue: 20, usefulLife: 1095,
+            purchaseDate: cal.date(byAdding: .day, value: -300, to: now),
+            now: now, note: "已用约 10 个月"
+        )
+        context.insert(mouse)
+
+        // iCloud+：月度订阅（30 天周期，21 元/月）
         let cloud = makeItem(
             name: "iCloud+ 200GB", mode: .subscription, category: .subscription,
             purchasePrice: 21, unitName: nil, packageQuantity: nil,
             billingCycleDays: 30,
             nextBillingDate: cal.date(byAdding: .day, value: 9, to: now),
-            now: now, note: "每月扣费"
+            now: now, note: "月度订阅，每月扣费"
         )
-        addPurchase(to: cloud, daysAgo: 21, price: 21, pkgQty: nil, observedLife: nil, source: .subscription)
+        addPurchase(to: cloud, daysAgo: 21, price: 21, pkgQty: nil, observedLife: nil, source: .subscription, now: now)
         context.insert(cloud)
 
         // ---- 演示商家：让商家管理页有内容 ----
+        let jdMerchant = Merchant(name: "京东", type: .online, leadDays: 2, deeplinkURL: "https://m.jd.com", isFavorite: true)
         let merchants = [
             Merchant(name: "学校超市", type: .campus, leadDays: 0, isFavorite: true),
-            Merchant(name: "京东", type: .online, leadDays: 2, deeplinkURL: "https://m.jd.com", isFavorite: true),
+            jdMerchant,
             Merchant(name: "淘宝", type: .online, leadDays: 3),
             Merchant(name: "校医院", type: .campus, leadDays: 0),
             Merchant(name: "苹果官网", type: .online, leadDays: 1, deeplinkURL: "https://www.apple.com.cn")
@@ -251,9 +273,10 @@ enum SeedData {
     private static func addPurchase(
         to item: LifeItem, daysAgo: Int, price: Double,
         pkgQty: Double?, observedLife: Int?,
-        source: PurchaseSourceType = .offline
+        source: PurchaseSourceType = .offline,
+        now: Date = .now
     ) {
-        let date = Calendar.current.date(byAdding: .day, value: -daysAgo, to: .now) ?? .now
+        let date = Calendar.current.date(byAdding: .day, value: -daysAgo, to: now) ?? now
         let eff = ForecastEngine.effectiveCost(total: price, coupon: nil, shipping: nil)
         let unitP = ForecastEngine.unitPrice(effectiveCost: eff, packageQuantity: pkgQty)
         let record = PurchaseRecord(

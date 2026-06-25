@@ -17,6 +17,7 @@ struct ItemDetailView: View {
     @State private var showPurchaseEdit: PurchaseRecord?
     @State private var showAddPurchase = false
     @State private var showSnoozeFeedback = false
+    @State private var previewReceiptPath: ReceiptPath?
 
     var body: some View {
         ScrollView {
@@ -83,6 +84,9 @@ struct ItemDetailView: View {
         }
         .sheet(item: $showPurchaseEdit) { record in
             PurchaseEditSheet(item: item, record: record) { refreshSnapshot() }
+        }
+        .sheet(item: $previewReceiptPath) { path in
+            ReceiptPreviewSheet(path: path)
         }
         .alert("已设置稍后提醒", isPresented: $showSnoozeFeedback) {
             Button("好的", role: .cancel) {}
@@ -273,6 +277,17 @@ struct ItemDetailView: View {
                         .font(.caption).foregroundStyle(.secondary)
                 }
             }
+            // 小票图入口
+            if r.receiptImagePath != nil {
+                Button {
+                    previewReceiptPath = ReceiptPath(path: r.receiptImagePath)
+                } label: {
+                    Image(systemName: "doc.text.magnifyingglass")
+                        .font(.subheadline)
+                        .foregroundStyle(AppTheme.accent)
+                }
+                .buttonStyle(.plain)
+            }
         }
         .padding(.vertical, 4)
         .contentShape(Rectangle())
@@ -397,6 +412,44 @@ struct ItemDetailView: View {
                 .padding(AppTheme.pad)
                 .background(AppTheme.card, in: RoundedRectangle(cornerRadius: AppTheme.corner))
                 .padding(.horizontal, AppTheme.pad)
+            }
+        }
+    }
+}
+
+// MARK: - 小票图预览
+struct ReceiptPath: Identifiable {
+    let id = UUID()
+    let path: String
+}
+
+struct ReceiptPreviewSheet: View {
+    let path: String
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                if let img = ImageStore.load(relativePath: path) {
+                    Image(uiImage: img)
+                        .resizable().scaledToFit()
+                        .padding()
+                } else {
+                    EmptyStateView(
+                        symbol: "photo.badge.exclamationmark",
+                        title: "小票图已丢失",
+                        message: "原图可能已被清理。新建/补货时重新扫描可恢复。"
+                    )
+                    .padding(.top, 60)
+                }
+            }
+            .background(AppTheme.bg)
+            .navigationTitle("小票")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("关闭") { dismiss() }
+                }
             }
         }
     }

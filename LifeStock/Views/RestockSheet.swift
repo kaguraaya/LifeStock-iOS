@@ -20,6 +20,7 @@ struct RestockSheet: View {
     @State private var shipping: String = ""
     @State private var useLastValues: Bool = true
     @State private var showScanner = false
+    @State private var scannedReceiptPath: String?
 
     private var lastRecord: PurchaseRecord? {
         item.purchases.sorted { $0.purchasedAt > $1.purchasedAt }.first
@@ -74,8 +75,9 @@ struct RestockSheet: View {
                 if useLastValues { applyLastValues() }
             }
             .fullScreenCover(isPresented: $showScanner) {
-                ReceiptScannerView { amount in
+                ReceiptScannerView { amount, path in
                     totalPrice = String(format: "%.2f", amount)
+                    scannedReceiptPath = path
                 }
             }
         }
@@ -121,7 +123,8 @@ struct RestockSheet: View {
             couponAmount: couponV,
             shippingFee: shippingV,
             effectiveCost: eff,
-            sourceType: .offline
+            sourceType: .offline,
+            receiptImagePath: scannedReceiptPath
         )
         record.item = item
         item.purchases.append(record)

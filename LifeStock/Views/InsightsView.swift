@@ -210,7 +210,7 @@ struct InsightsView: View {
                             LineMark(x: .value("日期", p.date),
                                      y: .value("金额", p.price))
                                 .foregroundStyle(AppTheme.accent)
-                                .symbol(Circle())
+                                .symbol(.circle)
                             AreaMark(x: .value("日期", p.date),
                                      y: .value("金额", p.price))
                                 .foregroundStyle(AppTheme.accent.opacity(0.15))
