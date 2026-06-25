@@ -4,42 +4,8 @@
 	classes = {
 	};
 	objectVersion = 77;
-	pbxProject = {
-		8C0000000000000000000001 /* Project object */ = {
-			isa = PBXProject;
-			attributes = {
-				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1600;
-				TargetAttributes = {
-					8C0000000000000000000040 = {
-						CreatedOnToolsVersion = 16.0;
-					};
-					8C0000000000000000000041 = {
-						CreatedOnToolsVersion = 16.0;
-					};
-				};
-			};
-			buildConfigurationList = 8C0000000000000000000050 /* Build configuration list for PBXProject */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = "zh-Hans";
-			hasScannedForEncodings = 0;
-			knownRegions = (
-				"zh-Hans",
-				Base,
-			);
-			mainGroup = 8C0000000000000000000010;
-			preferredProjectObjectVersion = 77;
-			productRefGroup = 8C0000000000000000000011 /* Products */;
-			projectDirPath = "";
-			projectRoot = "";
-			targets = (
-				8C0000000000000000000040 /* LifeStock */,
-				8C0000000000000000000041 /* LifeStockWidget */,
-			);
-		};
-	};
-/* Begin PBXBuildFile section (embed widget only; sources auto-synced) */
+	objects = {
+/* Begin PBXBuildFile section */
 		8C00000000000000000000A1 /* LifeStockWidget.appex in Embed App Extensions */ = {
 			isa = PBXBuildFile;
 			fileRef = 8C0000000000000000000021 /* LifeStockWidget.appex */;
@@ -163,7 +129,43 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXBuildPhase: Sources */
+/* Begin PBXProject section */
+		8C0000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					8C0000000000000000000040 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					8C0000000000000000000041 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = 8C0000000000000000000050 /* Build configuration list for PBXProject */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = "zh-Hans";
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				"zh-Hans",
+				Base,
+			);
+			mainGroup = 8C0000000000000000000010;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 8C0000000000000000000011 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8C0000000000000000000040 /* LifeStock */,
+				8C0000000000000000000041 /* LifeStockWidget */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
 		8C0000000000000000000090 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -178,9 +180,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-/* End Sources */
+/* End PBXSourcesBuildPhase section */
 
-/* Begin PBXBuildPhase: Frameworks */
+/* Begin PBXFrameworksBuildPhase section */
 		8C0000000000000000000091 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -195,9 +197,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-/* End Frameworks */
+/* End PBXFrameworksBuildPhase section */
 
-/* Begin PBXBuildPhase: Resources */
+/* Begin PBXResourcesBuildPhase section */
 		8C0000000000000000000092 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -212,9 +214,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-/* End Resources */
+/* End PBXResourcesBuildPhase section */
 
-/* Begin PBXCopyFilesBuildPhase: Embed App Extensions */
+/* Begin PBXCopyFilesBuildPhase section */
 		8C0000000000000000000096 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -226,7 +228,7 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-/* End Embed App Extensions */
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
 		8C0000000000000000000060 /* Project: Debug */ = {
@@ -238,7 +240,6 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -347,8 +348,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "生活余量管家";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "LifeStock 需要访问相册，以便为物品添加图片或小票。仅在本地保存，不会上传。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "LifeStock 需要访问相册，以便为物品添加图片或扫描小票。仅在本地保存，不会上传。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -377,7 +377,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "生活余量管家";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "LifeStock 需要访问相册，以便为物品添加图片或小票。仅在本地保存，不会上传。";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "LifeStock 需要访问相册，以便为物品添加图片或扫描小票。仅在本地保存，不会上传。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -479,4 +479,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+	};
+	rootObject = 8C0000000000000000000001 /* Project object */;
 }
