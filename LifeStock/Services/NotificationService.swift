@@ -113,8 +113,6 @@ final class NotificationService {
     /// 稍后提醒：延后 snoozeHours
     func snooze(item: LifeItem, hours: Int? = nil) {
         let h = hours ?? item.reminderPolicy?.snoozeHours ?? 8
-        let fireDate = Date().addingTimeInterval(TimeInterval(h) * 3600)
-
         let content = UNMutableNotificationContent()
         content.title = "\(item.name)：稍后提醒"
         content.body = body(for: item)

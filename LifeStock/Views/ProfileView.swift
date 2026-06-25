@@ -45,13 +45,17 @@ struct ProfileView: View {
         }
         .alert("清空所有数据？", isPresented: $showClearConfirm) {
             Button("取消", role: .cancel) {}
-            Button("确认清空", role: .destructive) { clearAll() }
+            Button("确认清空", role: .destructive) {
+                clearAll()
+            }
         } message: {
             Text("将删除所有物品、购买记录与自定义模板，内置模板会保留。此操作不可恢复。")
         }
         .alert("重新载入演示数据？", isPresented: $showDemoConfirm) {
             Button("取消", role: .cancel) {}
-            Button("载入", role: .destructive) { reloadDemo() }
+            Button("载入", role: .destructive) {
+                reloadDemo()
+            }
         } message: {
             Text("将先清空当前数据，再写入三套演示场景。")
         }
@@ -60,14 +64,16 @@ struct ProfileView: View {
 
     // MARK: - 头部
     private var headerSection: some View {
-        Section {
+        // 用 reduce 做轻量计数，避免 flatMap 全量复制数组导致 body 卡死
+        let purchaseCount = allItems.reduce(0) { $0 + $1.purchases.count }
+        return Section {
             VStack(spacing: 8) {
                 Image(systemName: "shippingbox.fill")
                     .font(.system(size: 40))
                     .foregroundStyle(AppTheme.accent)
                 Text("LifeStock · 生活余量管家")
                     .font(.headline)
-                Text("追踪 \(allItems.count) 件物品 · \(allItems.flatMap { $0.purchases }.count) 条记录")
+                Text("追踪 \(allItems.count) 件物品 · \(purchaseCount) 条记录")
                     .font(.caption).foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity)
@@ -90,8 +96,11 @@ struct ProfileView: View {
                 Toggle("", isOn: Binding(
                     get: { notificationAuthorized },
                     set: { newValue in
-                        if newValue { requestNotification() }
-                        else { openSettings() }
+                        if newValue {
+                            requestNotification()
+                        } else {
+                            openSettings()
+                        }
                     }
                 ))
                 .labelsHidden()
@@ -148,7 +157,7 @@ struct ProfileView: View {
 
     // MARK: - 管理入口（商家 / 成就 / 提醒中心）
     private var manageSection: some View {
-        Section("管理") {
+        Section {
             NavigationLink {
                 ReminderCenterView()
             } label: {
@@ -164,6 +173,8 @@ struct ProfileView: View {
             } label: {
                 Label("成就与节省", systemImage: "rosette")
             }
+        } header: {
+            Text("管理")
         }
     }
 
@@ -217,6 +228,7 @@ struct ProfileView: View {
         }
     }
 
+    @MainActor
     private func openSettings() {
         if let url = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(url)

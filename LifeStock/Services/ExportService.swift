@@ -78,7 +78,7 @@ enum ExportService {
             predicate: #Predicate { $0.isBuiltIn == false }
         ))
         for t in builtIn { context.delete(t) }
-        let merchants = try context.fetch(FetchDescriptor<Merchant.self>())
+        let merchants = try context.fetch(FetchDescriptor<Merchant>())
         for m in merchants { context.delete(m) }
         try context.save()
         SeedData.markUnseeded()

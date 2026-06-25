@@ -52,7 +52,7 @@ struct AchievementsView: View {
             VStack(spacing: 4) {
                 Text("Lv.\(level.level)").font(.caption.weight(.semibold)).foregroundStyle(AppTheme.accent)
                 Text(level.title).font(.title3.bold())
-                Text("\(items.count) 件物品 · \(items.flatMap { $0.purchases }.count) 次记录")
+                Text("\(items.count) 件物品 · \(items.reduce(0) { $0 + $1.purchases.count }) 次记录")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }

@@ -79,7 +79,6 @@ struct InsightsView: View {
         let records = filteredRecords()
         let total = ForecastEngine.cumulativeSpend(records: records)
         let count = records.count
-        let avg = count > 0 ? total / Double(count) : 0
         let dailyAvg = Double(timeWindow.days) > 0 ? total / Double(timeWindow.days) : 0
         return CardSection(title: "支出总览", subtitle: timeWindow.displayName) {
             HStack(spacing: 12) {
@@ -242,7 +241,6 @@ struct InsightsView: View {
             }
             return rows.sorted { $0.unitPrice < $1.unitPrice }  // 便宜在上
         }()
-        let minP = data.first?.unitPrice
         let maxP = data.last?.unitPrice
 
         return CardSection(title: "单价对比", subtitle: "同类消耗品谁更划算（按最近单价）") {

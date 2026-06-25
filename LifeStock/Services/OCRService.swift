@@ -27,7 +27,7 @@ enum OCRService {
                 let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
                 do {
                     try handler.perform([request])
-                    let observations = request.results as? [VNRecognizedTextObservation] ?? []
+                    let observations = request.results ?? []
                     let texts = observations.compactMap { $0.topCandidates(1).first?.string }
                     continuation.resume(returning: texts)
                 } catch {

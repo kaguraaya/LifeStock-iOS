@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 @main
+@MainActor
 struct LifeStockApp: App {
 
     /// SwiftData 容器。所有模型注册于此，App 各处通过环境注入。

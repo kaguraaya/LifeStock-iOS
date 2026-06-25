@@ -8,8 +8,7 @@ import SwiftData
 struct MerchantView: View {
 
     @Environment(\.modelContext) private var context
-    @Query(sort: [SortDescriptor(\Merchant.isFavorite, order: .reverse),
-                  SortDescriptor(\Merchant.name)]) private var merchants: [Merchant]
+    @Query(sort: [SortDescriptor(\Merchant.name)]) private var merchants: [Merchant]
 
     @State private var showAdd = false
     @State private var editing: Merchant?
@@ -26,7 +25,7 @@ struct MerchantView: View {
                 )
                 .listRowBackground(Color.clear)
             } else {
-                ForEach(merchants) { m in
+                ForEach(sortedMerchants) { m in
                     Button {
                         editing = m
                     } label: {
@@ -92,6 +91,15 @@ struct MerchantView: View {
         context.delete(m)
         try? context.save()
     }
+
+    private var sortedMerchants: [Merchant] {
+        merchants.sorted { lhs, rhs in
+            if lhs.isFavorite != rhs.isFavorite {
+                return lhs.isFavorite && !rhs.isFavorite
+            }
+            return lhs.name.localizedStandardCompare(rhs.name) == .orderedAscending
+        }
+    }
 }
 
 // MARK: - 编辑/新增
@@ -120,7 +128,7 @@ struct MerchantEditSheet: View {
                         }
                     }
                 }
-                Section("物流") {
+                Section {
                     Stepper("提前期 \(leadDays) 天（电商通常 2-3）", value: $leadDays, in: 0...14)
                 } header: {
                     Text("物流")
@@ -141,7 +149,9 @@ struct MerchantEditSheet: View {
                     Button("取消") { dismiss() }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("保存") { save() }
+                    Button("保存") {
+                        Task { @MainActor in save() }
+                    }
                         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
                         .fontWeight(.semibold)
                 }
@@ -159,6 +169,7 @@ struct MerchantEditSheet: View {
         isFavorite = m.isFavorite
     }
 
+    @MainActor
     private func save() {
         let trimmedName = name.trimmingCharacters(in: .whitespaces)
         let target: Merchant

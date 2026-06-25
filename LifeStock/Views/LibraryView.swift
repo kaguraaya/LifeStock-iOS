@@ -123,7 +123,7 @@ struct LibraryView: View {
                         Label("我已补货", systemImage: "cart.fill")
                     }
                     Button {
-                        toggleArchive(item)
+                        Task { @MainActor in toggleArchive(item) }
                     } label: {
                         Label(item.status == .archived ? "恢复追踪" : "归档",
                               systemImage: item.status == .archived ? "arrow.uturn.backward.circle" : "archivebox")
@@ -139,7 +139,7 @@ struct LibraryView: View {
                 }
                 .swipeActions(edge: .leading) {
                     Button {
-                        toggleArchive(item)
+                        Task { @MainActor in toggleArchive(item) }
                     } label: {
                         Label("归档", systemImage: "archivebox")
                     }
@@ -154,6 +154,7 @@ struct LibraryView: View {
         .background(AppTheme.bg)
     }
 
+    @MainActor
     private func toggleArchive(_ item: LifeItem) {
         item.status = (item.status == .archived ? .active : .archived)
         item.updatedAt = .now

@@ -106,6 +106,7 @@ struct RestockSheet: View {
         return parts.joined(separator: " · ")
     }
 
+    @MainActor
     private func save() {
         guard let total = Double(totalPrice) else { return }
         let q = Double(quantity) ?? 1
@@ -127,7 +128,6 @@ struct RestockSheet: View {
             receiptImagePath: scannedReceiptPath
         )
         record.item = item
-        item.purchases.append(record)
         item.purchasePrice = total
         item.unitPrice = unitP
         item.purchaseDate = purchaseDate

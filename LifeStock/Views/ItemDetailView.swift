@@ -86,7 +86,7 @@ struct ItemDetailView: View {
             PurchaseEditSheet(item: item, record: record) { refreshSnapshot() }
         }
         .sheet(item: $previewReceiptPath) { path in
-            ReceiptPreviewSheet(path: path)
+            ReceiptPreviewSheet(path: path.path)
         }
         .alert("已设置稍后提醒", isPresented: $showSnoozeFeedback) {
             Button("好的", role: .cancel) {}
@@ -278,9 +278,9 @@ struct ItemDetailView: View {
                 }
             }
             // 小票图入口
-            if r.receiptImagePath != nil {
+            if let receiptImagePath = r.receiptImagePath {
                 Button {
-                    previewReceiptPath = ReceiptPath(path: r.receiptImagePath)
+                    previewReceiptPath = ReceiptPath(path: receiptImagePath)
                 } label: {
                     Image(systemName: "doc.text.magnifyingglass")
                         .font(.subheadline)

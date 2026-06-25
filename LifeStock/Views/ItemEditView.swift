@@ -310,6 +310,7 @@ struct ItemEditView: View {
     }
 
     // MARK: - 保存
+    @MainActor
     private func save() {
         let target: LifeItem
         if let item {
@@ -386,14 +387,13 @@ struct ItemEditView: View {
                 let eff = ForecastEngine.effectiveCost(total: total, coupon: nil, shipping: nil)
                 let record = PurchaseRecord(
                     purchasedAt: hasPurchaseDate ? purchaseDate : .now,
-                    totalPrice: total,
                     packageQuantity: target.packageQuantity,
+                    totalPrice: total,
                     unitPrice: target.unitPrice,
                     effectiveCost: eff,
                     sourceType: .offline
                 )
                 record.item = target
-                target.purchases.append(record)
                 target.purchasePrice = total
                 target.purchaseDate = hasPurchaseDate ? purchaseDate : .now
                 context.insert(record)

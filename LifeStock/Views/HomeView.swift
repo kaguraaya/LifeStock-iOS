@@ -19,6 +19,12 @@ struct HomeView: View {
     @Binding var showQuickAdd: Bool
     @State private var selectedItem: LifeItem?
 
+    // 摘要缓存：避免每次 body 重渲染都 flatMap/map 全量计算导致卡死
+    @State private var itemCount: Int = 0
+    @State private var pendingThisWeek: Int = 0
+    @State private var monthSpend: Double = 0
+    @State private var totalSaved: Double = 0
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -50,21 +56,24 @@ struct HomeView: View {
             .navigationDestination(item: $selectedItem) { item in
                 ItemDetailView(item: item)
             }
+            .onAppear { recomputeSummary() }
+            .onChange(of: items.count) { _, _ in recomputeSummary() }
+            .onChange(of: items.map { $0.updatedAt }) { _, _ in recomputeSummary() }
         }
     }
 
-    // MARK: 摘要区
-    private var summaryRow: some View {
+    // MARK: 摘要重算（只在此处做，避免每次 body 渲染都跑重计算）
+    private func recomputeSummary() {
         let snapshots = items.map { ItemSnapshotBuilder.snapshot(for: $0) }
-        let pendingThisWeek = snapshots.filter {
-            ($0.daysLeft ?? 999) <= 7
-        }.count
-        let monthSpend = ForecastEngine.spend(
-            inLast: 30,
-            records: items.flatMap { $0.purchases }
-        )
-        let saved = InsightEngine.totalSavings(items: items)
-        return VStack(spacing: 12) {
+        itemCount = items.count
+        pendingThisWeek = snapshots.filter { ($0.daysLeft ?? 999) <= 7 }.count
+        monthSpend = ForecastEngine.spend(inLast: 30, records: items.flatMap { $0.purchases })
+        totalSaved = InsightEngine.totalSavings(items: items)
+    }
+
+    // MARK: 摘要区（读缓存，不在 body 内做重计算）
+    private var summaryRow: some View {
+        VStack(spacing: 12) {
             // 强调头部：本周待处理 + 一句文案，渐变背景
             VStack(alignment: .leading, spacing: 6) {
                 Text("本周待处理")
@@ -89,12 +98,12 @@ struct HomeView: View {
             .cardShadow()
 
             HStack(spacing: 12) {
-                SummaryCard(title: "追踪中", value: "\(snapshots.count)",
+                SummaryCard(title: "追踪中", value: "\(itemCount)",
                             subtitle: "件物品", symbol: "shippingbox.fill")
                 SummaryCard(title: "本月花费", value: MoneyFormatter.compact(monthSpend),
                             subtitle: "近 30 天", symbol: "yensign.circle.fill",
                             tint: .green)
-                SummaryCard(title: "累计节省", value: MoneyFormatter.compact(saved),
+                SummaryCard(title: "累计节省", value: MoneyFormatter.compact(totalSaved),
                             subtitle: "元", symbol: "tag.fill", tint: AppTheme.accent)
             }
         }

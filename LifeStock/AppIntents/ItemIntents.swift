@@ -25,6 +25,10 @@ struct ItemEntity: AppEntity {
     var id: UUID
     var displayName: String
 
+    var displayRepresentation: DisplayRepresentation {
+        DisplayRepresentation(title: "\(displayName)")
+    }
+
     var representation: IntentItem { IntentItem(id: id, displayName: displayName) }
 
     init(id: UUID, displayName: String) {
@@ -100,7 +104,6 @@ struct QuickRestockIntent: AppIntent {
             sourceType: .offline
         )
         record.item = target
-        target.purchases.append(record)
         target.purchasePrice = total
         target.unitPrice = unitP
         target.purchaseDate = .now
@@ -147,7 +150,6 @@ struct QuickAddItemIntent: AppIntent {
             let record = PurchaseRecord(purchasedAt: .now, totalPrice: totalPrice,
                                         effectiveCost: eff, sourceType: .offline)
             record.item = item
-            item.purchases.append(record)
             context.insert(record)
         }
         try context.save()

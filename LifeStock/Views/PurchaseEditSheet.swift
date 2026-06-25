@@ -107,6 +107,7 @@ struct PurchaseEditSheet: View {
         return parts.joined(separator: " · ")
     }
 
+    @MainActor
     private func save() {
         guard let total = Double(totalPrice) else { return }
         let q = Double(quantity) ?? 1
@@ -142,7 +143,6 @@ struct PurchaseEditSheet: View {
                 receiptImagePath: scannedReceiptPath
             )
             r.item = item
-            item.purchases.append(r)
             context.insert(r)
         }
         item.updatedAt = .now
@@ -155,11 +155,9 @@ struct PurchaseEditSheet: View {
         dismiss()
     }
 
+    @MainActor
     private func delete() {
         guard let r = record else { return }
-        if let idx = item.purchases.firstIndex(where: { $0.id == r.id }) {
-            item.purchases.remove(at: idx)
-        }
         context.delete(r)
         if let path = r.receiptImagePath { ImageStore.remove(relativePath: path) }
         item.updatedAt = .now
