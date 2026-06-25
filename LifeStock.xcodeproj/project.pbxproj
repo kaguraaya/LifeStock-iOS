@@ -113,7 +113,7 @@
 /* End PBXNativeTarget section */
 
 /* Begin PBXContainerItemProxy section */
-		0A0000000000000000000001 /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = 010000000000000000000000 /* Project object */; proxyType = 1; remoteGlobalIDString = 090000000000000000000002; remoteInfo = LifeStockWidget; };
+		0A0000000000000000000001 /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = 010000000000000000000000 /* Project object */; proxyType = 1; remoteGlobalIDString = "090000000000000000000002"; remoteInfo = LifeStockWidget; };
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXTargetDependency section */
