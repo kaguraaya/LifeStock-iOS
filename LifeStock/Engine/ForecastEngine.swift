@@ -245,6 +245,39 @@ enum ForecastEngine {
         return sorted.reversed().first(where: { ($0.lifeDaysObserved ?? 0) > 0 })?.lifeDaysObserved
     }
 
+    /// 纯只读：基于 item 已存的预测字段构建展示用 ForecastResult，
+    /// 不修改模型。供详情页 view body 反复调用而不会产生副作用。
+    static func displayResult(for item: LifeItem, today: Date = .now) -> ForecastResult {
+        guard item.trackingMode == .consumable else {
+            return ForecastResult(predictedDate: nil, predictedIntervalDays: nil,
+                                  confidence: 0, maeDays: nil, note: "仅消耗类支持复购预测")
+        }
+        if let interval = item.predictedCycleDays, interval > 0 {
+            // 复用已存的置信度估算口径，但纯只读不写回 item
+            let records = item.purchases.sorted { $0.purchasedAt < $1.purchasedAt }
+            let gaps = intervals(from: records)
+            let mae = maeDays(intervals: gaps, predicted: interval)
+            let mean = gaps.isEmpty ? interval : gaps.reduce(0, +) / Double(max(gaps.count, 1))
+            let cv = coefficientOfVariation(gaps)
+            let conf = confidenceScore(sampleCount: gaps.count,
+                                       maeDays: mae, meanDays: mean, cv: cv)
+            return ForecastResult(predictedDate: item.predictedDepletionDate,
+                                  predictedIntervalDays: interval,
+                                  confidence: conf,
+                                  maeDays: mae,
+                                  note: gaps.count >= 2
+                                         ? "基于历史 \(gaps.count) 次购买间隔"
+                                         : (item.packageQuantity != nil
+                                            ? "按包装量与日均消耗估算"
+                                            : "暂用模板默认周期"))
+        }
+        return ForecastResult(predictedDate: item.predictedDepletionDate,
+                              predictedIntervalDays: item.predictedCycleDays,
+                              confidence: 0,
+                              maeDays: nil,
+                              note: "记录一次购买后即可开始预测")
+    }
+
     /// 对消耗类物品做复购预测，并把结果写回 item 字段。
     /// 返回 ForecastResult 供 UI 使用。
     @discardableResult

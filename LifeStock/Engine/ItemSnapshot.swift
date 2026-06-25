@@ -40,7 +40,9 @@ enum ItemSnapshotBuilder {
 
         let confidence: Double?
         if item.trackingMode == .consumable {
-            let r = ForecastEngine.predictRepurchaseDate(for: item, today: now)
+            // 只读构建，避免在 view body（经 snapshot）中修改模型。
+            // 预测的写回由 App 启动、补货、详情页 onAppear 等时机完成。
+            let r = ForecastEngine.displayResult(for: item, today: now)
             confidence = r.confidence
         } else {
             confidence = nil

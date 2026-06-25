@@ -64,7 +64,14 @@ struct ItemDetailView: View {
                 }
             }
         }
-        .onAppear { refreshSnapshot() }
+        .onAppear {
+            refreshSnapshot()
+            // 消耗类：进入详情页时计算一次预测（写回 item 字段），
+            // 之后 forecastSection 只读这些字段，避免在 view body 内修改模型。
+            if item.trackingMode == .consumable {
+                ForecastEngine.predictRepurchaseDate(for: item)
+            }
+        }
         .sheet(isPresented: $showEdit) {
             ItemEditView(item: item) { refreshSnapshot() }
         }
@@ -273,7 +280,8 @@ struct ItemDetailView: View {
 
     // MARK: 预测信息
     private var forecastSection: some View {
-        let result = ForecastEngine.predictRepurchaseDate(for: item)
+        // 只读构建展示结果，不在 view body 内修改模型（预测写回在 onAppear 完成）
+        let result = ForecastEngine.displayResult(for: item)
         let level = ConfidenceLevel.from(score: result.confidence)
         let backtest = ForecastEngine.backtest(for: item)
         let summary = ForecastEngine.backtestSummary(for: item)
@@ -301,12 +309,12 @@ struct ItemDetailView: View {
                         LineMark(x: .value("日期", pt.date),
                                  y: .value("天数", pt.predicted))
                             .foregroundStyle(AppTheme.accent)
-                            .symbol(Square())
+                            .symbol(.square)
                             .interpolationMethod(.catmullRom)
                         LineMark(x: .value("日期", pt.date),
                                  y: .value("天数", pt.actual))
                             .foregroundStyle(.green)
-                            .symbol(Circle())
+                            .symbol(.circle)
                             .interpolationMethod(.catmullRom)
                     }
                     .frame(height: 160)
